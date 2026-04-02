@@ -11,7 +11,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'api/donasi/*',
+        ]);
+
+        $middleware->redirectUsersTo(function () {
+            if (auth()->check() && auth()->user()->isAdmin()) {
+                return route('dashboard', absolute: false);
+            }
+            return '/';
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
