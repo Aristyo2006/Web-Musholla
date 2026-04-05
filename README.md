@@ -1,58 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🕌 Sistem Informasi Musholla Al-Kautsar (Web-Musholla)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi dan Platform Donasi Berbasis Web Premium untuk Musholla Al-Kautsar. Didesain dengan antarmuka yang sangat modern, mengedepankan estetika **Liquid Glassmorphism**, serta responsivitas tinggi untuk pengalaman pengguna (jamaah & donatur) yang maksimal di setiap perangkat.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Modern & Premium UI:** Animasi halus, layout *Mobile-First*, dan integrasi **SVG Liquid Glass Displacement Filter** untuk memberikan efek visual kelas atas yang jauh dari kesan kaku.
+- **Portal Donasi Terintegrasi:** Memudahkan donatur untuk menyumbang dengan instruksi yang jelas dan transparan.
+- **Galeri Storytelling (Separated Cards):** Fitur galeri foto masjid yang imersif. Menampilkan foto dengan resolusi tinggi yang disandingkan dengan deskripsi *glassmorphic layer*.
+- **Portal Artikel/Berita:** Sistem manajemen artikel untuk mempublikasikan kajian, jadwal, atau laporan progres pembangunan.
+- **Admin Dashboard:** Dasbor yang tangguh dan estetik untuk mengelola donasi, artikel, pengguna, serta *monitoring* lalu lintas web.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Tech Stack
 
-## Learning Laravel
+Platform ini dibangun menggunakan teknologi terbaru untuk skalabilitas dan performa:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Framework Core:** [Laravel 11.x](https://laravel.com)
+- **Styling:** [Tailwind CSS 3.x](https://tailwindcss.com) (Utility-first framework)
+- **Frontend Interactivity:** [Alpine.js](https://alpinejs.dev)
+- **Visual Effects:** Vanilla JavaScript + Native SVG Filters
+- **Database:** MySQL / SQLite
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Panduan Instalasi (Development)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek ini di *local environment* (seperti Laragon/XAMPP):
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 1. Clone Repositori
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Aristyo2006/Web-Musholla.git
+cd Web-Musholla
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Instalasi Dependensi PHP & Node.js
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Konfigurasi Environment
+Salin file konfigurasi *environment* bawaan Laravel:
+```bash
+cp .env.example .env
+```
+Lalu buka file `.env` yang baru dibuat dan sesuaikan konfigurasi database Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=donasi_musholla_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Generate App Key & Migrasi Database
+```bash
+php artisan key:generate
+php artisan migrate --seed
+```
+*(Tambahkan argumen `--seed` jika Anda memiliki data dummy bawaan untuk artikel/donasi)*
 
-## Code of Conduct
+### 5. Link Storage (Untuk Media & Galeri)
+Jalankan perintah ini agar aset foto yang diunggah dapat diakses oleh publik:
+```bash
+php artisan storage:link
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 6. Jalankan Local Development Server
+Untuk menjalankan backend (Laravel) dan merender aset *frontend* (Vite) secara bersamaan, buka **dua** terminal dan jalankan:
 
-## Security Vulnerabilities
+Terminal 1:
+```bash
+php artisan serve
+```
+Terminal 2:
+```bash
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Aplikasi sekarang dapat diakses melalui browser di alamat: `http://127.0.0.1:8000`
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+*Didukung dan dikembangkan secara eksklusif untuk **Musholla Al-Kautsar**.*
