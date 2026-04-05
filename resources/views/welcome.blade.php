@@ -100,7 +100,8 @@
         .mouse-scroll .dot {
             width: 4px;
             height: 4px;
-            background-color: #D97706; /* Gold color */
+            background-color: #D97706;
+            /* Gold color */
             border-radius: 50%;
             position: absolute;
             top: 8px;
@@ -110,15 +111,28 @@
         }
 
         @keyframes scroll-dot {
-            0% { transform: translate(-50%, 0); opacity: 0; }
-            30% { opacity: 1; }
-            60% { transform: translate(-50%, 15px); opacity: 0; }
-            100% { opacity: 0; }
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 1;
+            }
+
+            60% {
+                transform: translate(-50%, 15px);
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .scroll-text {
             letter-spacing: 0.25em;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -138,15 +152,18 @@
         <div class="relative z-10 max-w-5xl px-6 text-center">
             <h1 class="text-4xl xs:text-5xl sm:text-7xl lg:text-8xl font-black text-white hero-title mb-6 md:mb-10 animate-fade-in-up leading-[1.1] tracking-tight"
                 style="animation-delay: 0.1s">
-                {!! nl2br(e($settings['hero_title'] ?? "Selamat Datang di Website\n" )) !!}<span class="gold-accent italic">{{ $settings['hero_subtitle_accent'] ?? 'Musholla Al-Kautsar' }}</span>
+                {!! nl2br(e($settings['hero_title'] ?? "Selamat Datang di Website\n")) !!}<span
+                    class="gold-accent italic">{{ $settings['hero_subtitle_accent'] ?? 'Musholla Al-Kautsar' }}</span>
             </h1>
             <p class="text-lg md:text-2xl text-emerald-50/80 mb-10 md:mb-16 max-w-2xl mx-auto animate-fade-in-up leading-relaxed"
                 style="animation-delay: 0.2s">
                 {{ $settings['hero_subtitle'] ?? 'Mari bersama-sama membangun rumah Allah untuk bekal di akhirat kelak.' }}
             </p>
-            <div class="mt-12 md:mt-24 flex flex-col items-center gap-6 animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="mt-12 md:mt-24 flex flex-col items-center gap-6 animate-fade-in-up"
+                style="animation-delay: 0.4s">
                 <div class="flex flex-col items-center gap-3">
-                    <span class="text-emerald-50/50 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] scroll-text">
+                    <span
+                        class="text-emerald-50/50 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] scroll-text">
                         <span class="hidden md:inline">Scroll untuk selengkapnya</span>
                         <span class="md:hidden">Geser kebawah selengkapnya</span>
                     </span>
@@ -159,27 +176,35 @@
     </section>
 
     <!-- Tentang Kita Section -->
-    <section id="about" class="relative py-20 md:py-48 bg-white overflow-hidden lg:min-h-[700px] flex flex-col lg:flex-row lg:items-center">
+    <section id="about"
+        class="relative py-20 md:py-48 bg-white overflow-hidden lg:min-h-[700px] flex flex-col lg:flex-row lg:items-center">
         <!-- Full Image Back Side (Right Side) -->
         <div class="lg:absolute lg:right-0 lg:top-0 lg:w-1/2 lg:h-full w-full h-[350px] mb-8 lg:mb-0">
             <div class="relative h-full w-full">
                 @if(isset($settings['about_image']))
-                    <img src="{{ Storage::url($settings['about_image']) }}" alt="Musholla" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($settings['about_image']) }}" alt="Musholla"
+                        class="w-full h-full object-cover">
                 @else
                     <img src="/images/hero.png" alt="Musholla" class="w-full h-full object-cover">
                 @endif
-                
+
                 <!-- Premium Soft Gradient Mask (Desktop) -->
-                <div class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/60 to-transparent hidden lg:block pointer-events-none"></div>
+                <div
+                    class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/60 to-transparent hidden lg:block pointer-events-none">
+                </div>
                 <!-- Gradient Mask (Mobile) -->
-                <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/20 to-transparent lg:hidden pointer-events-none"></div>
+                <div
+                    class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/20 to-transparent lg:hidden pointer-events-none">
+                </div>
             </div>
         </div>
 
         <!-- Content Container -->
         <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 relative z-10 w-full">
             <div class="w-full lg:w-1/2 pr-0 lg:pr-16 animate-fade-in-up">
-                <div class="bg-amber-500 text-emerald-950 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full inline-block mb-6 md:mb-8 shadow-sm">Sejarah & Profil</div>
+                <div
+                    class="bg-amber-500 text-emerald-950 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full inline-block mb-6 md:mb-8 shadow-sm">
+                    Sejarah & Profil</div>
                 <h2 class="text-3xl md:text-6xl font-black text-emerald-950 tracking-tight mb-6 md:mb-8 leading-[1.1]">
                     {{ $settings['about_title'] ?? 'Tentang Musholla Al-Kautsar' }}
                 </h2>
@@ -194,8 +219,8 @@
     <section id="carousel" class="py-20 md:py-32 bg-gray-50 overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 md:mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4 md:mb-6 leading-tight">Galeri progres pembangunan</h2>
-                <p class="text-gray-500 max-w-xl mx-auto text-base md:text-lg italic">Melihat lebih dekat setiap perkembangan yang kita capai bersama demi kenyamanan ibadah umat.</p>
+                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4 md:mb-6 leading-tight">Galeri</h2>
+                <p class="text-gray-500 max-w-xl mx-auto text-base md:text-lg italic">Footer Text 2.</p>
             </div>
 
             <!-- Carousel Wrapper (Allows buttons to scale without clipping) -->
@@ -206,38 +231,58 @@
                     <!-- Carousel Items -->
                     @forelse($featuredGalleries as $key => $gallery)
                         <div class="carousel-item {{ $key === 0 ? 'active' : '' }} absolute inset-0">
-                            <img src="{{ Storage::url($gallery->image) }}" alt="{{ $gallery->title }}" class="w-full h-full object-cover">
-                            <div class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
+                            <img src="{{ Storage::url($gallery->image) }}" alt="{{ $gallery->title }}"
+                                class="w-full h-full object-cover">
+                            <div
+                                class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
                                 @if($gallery->badge)
-                                    <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">{{ strtoupper($gallery->badge) }}</div>
+                                    <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">
+                                        {{ strtoupper($gallery->badge) }}
+                                    </div>
                                 @endif
-                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">{{ $gallery->title }}</h3>
-                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">{{ $gallery->description }}</p>
+                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">
+                                    {{ $gallery->title }}
+                                </h3>
+                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">
+                                    {{ $gallery->description }}
+                                </p>
                             </div>
                         </div>
                     @empty
                         <div class="carousel-item active absolute inset-0">
                             <img src="/images/hero.png" alt="Musholla Hero" class="w-full h-full object-cover">
-                            <div class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
-                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">FOTO UTAMA</div>
-                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Desain Arsitektur Modern</h3>
-                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">Memadukan nilai tradisional dengan estetika modern yang minimalis.</p>
+                            <div
+                                class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
+                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">
+                                    FOTO UTAMA</div>
+                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Desain Arsitektur
+                                    Modern</h3>
+                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">
+                                    Memadukan nilai tradisional dengan estetika modern yang minimalis.</p>
                             </div>
                         </div>
                         <div class="carousel-item absolute inset-0">
                             <img src="/images/interior.png" alt="Musholla Interior" class="w-full h-full object-cover">
-                            <div class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
-                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">INTERIOR</div>
-                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Interior yang Menenangkan</h3>
-                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">Pencahayaan alami untuk menambah kekhusyukan dalam beribadah.</p>
+                            <div
+                                class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
+                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">
+                                    INTERIOR</div>
+                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Interior yang
+                                    Menenangkan</h3>
+                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">
+                                    Pencahayaan alami untuk menambah kekhusyukan dalam beribadah.</p>
                             </div>
                         </div>
                         <div class="carousel-item absolute inset-0">
                             <img src="/images/community.png" alt="Musholla Community" class="w-full h-full object-cover">
-                            <div class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
-                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">KOMUNITAS</div>
-                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Pusat Ukhuwah Islamiyah</h3>
-                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">Menjadi tempat berkumpulnya umat untuk berkarya dan berbagi ilmu.</p>
+                            <div
+                                class="absolute bottom-0 inset-x-0 p-6 md:p-12 bg-gradient-to-t from-emerald-950/90 via-emerald-950/40 to-transparent">
+                                <div class="bg-amber-500 text-[10px] font-bold px-3 py-1 rounded-full w-fit mb-3 md:mb-4">
+                                    KOMUNITAS</div>
+                                <h3 class="text-white text-2xl md:text-4xl font-bold mb-2 tracking-tight">Pusat Ukhuwah
+                                    Islamiyah</h3>
+                                <p class="text-emerald-100/80 text-sm md:text-base line-clamp-2 md:line-clamp-none">Menjadi
+                                    tempat berkumpulnya umat untuk berkarya dan berbagi ilmu.</p>
                             </div>
                         </div>
                     @endforelse
@@ -271,7 +316,8 @@
                         $totalSlides = $featuredGalleries->isEmpty() ? 3 : $featuredGalleries->count();
                     @endphp
                     @for($i = 0; $i < $totalSlides; $i++)
-                        <div class="carousel-dot {{ $i === 0 ? 'w-16 bg-amber-500' : 'w-8 bg-white/30' }} h-1 rounded-full cursor-pointer transition-all duration-300" onclick="showSlide({{ $i }})"></div>
+                        <div class="carousel-dot {{ $i === 0 ? 'w-16 bg-amber-500' : 'w-8 bg-white/30' }} h-1 rounded-full cursor-pointer transition-all duration-300"
+                            onclick="showSlide({{ $i }})"></div>
                     @endfor
                 </div>
             </div>
@@ -281,10 +327,13 @@
     <!-- Articles Section -->
     <section id="articles" class="py-24 md:py-32 bg-white">
         <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
+            <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 md:mb-6 leading-tight tracking-tight">Cerita dari Musholla</h2>
-                    <p class="text-gray-500 text-lg md:text-xl italic">Pantau terus kegiatan dan info terbaru di sini.</p>
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 md:mb-6 leading-tight tracking-tight">
+                        Artikel Terbaru</h2>
+                    <p class="text-gray-500 text-lg md:text-xl italic">Lorem Ipsum Dolor Sit Amet.
+                    </p>
                 </div>
                 <a href="{{ route('articles.index') }}"
                     class="group flex items-center gap-2 text-emerald-800 font-bold text-base md:text-lg hover:text-emerald-600 transition-all">
@@ -310,13 +359,15 @@
                             <div class="flex items-center gap-4 mb-4">
                                 <span
                                     class="px-4 py-1.5 bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase rounded-lg">Update</span>
-                                <span class="text-gray-400 text-xs font-bold">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
+                                <span
+                                    class="text-gray-400 text-xs font-bold">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
                             </div>
                             <h3
                                 class="text-2xl font-bold mb-4 line-clamp-2 leading-tight group-hover:text-emerald-900 transition-colors text-gray-800">
                                 {{ $article->title }}
                             </h3>
-                            <p class="text-gray-600 text-base mb-8 line-clamp-3 leading-relaxed">{{ Str::limit(strip_tags($article->content), 120) }}
+                            <p class="text-gray-600 text-base mb-8 line-clamp-3 leading-relaxed">
+                                {{ Str::limit(strip_tags($article->content), 120) }}
                             </p>
                             <div class="mt-auto pt-4 border-t border-gray-200/60 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
@@ -332,9 +383,11 @@
                                     <span
                                         class="font-bold text-sm text-gray-700 truncate max-w-[120px]">{{ $article->user->name ?? 'Admin' }}</span>
                                 </div>
-                                <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                                     </svg>
                                 </div>
                             </div>
@@ -345,21 +398,31 @@
 
             <!-- Subtle Donation CTA -->
             <div class="mt-12 md:mt-20">
-                <div class="bg-gradient-to-br from-emerald-950 to-emerald-900 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 shadow-2xl shadow-emerald-950/20 relative overflow-hidden text-center md:text-left">
+                <div
+                    class="bg-gradient-to-br from-emerald-950 to-emerald-900 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 shadow-2xl shadow-emerald-950/20 relative overflow-hidden text-center md:text-left">
                     <!-- Decorative element -->
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[100px] rounded-full -mr-32 -mt-32"></div>
-                    
-                    <div class="relative z-10 max-w-2xl px-2 md:px-0">
-                        <h3 class="text-2xl md:text-4xl font-black text-white mb-3 md:mb-4 leading-tight tracking-tight">Mari Selesaikan <span class="text-emerald-400 font-bold italic">Pembangunan Musholla</span></h3>
-                        <p class="text-emerald-100/70 text-base md:text-xl font-medium italic leading-relaxed">"Sesungguhnya sedekah itu memadamkan kemarahan Allah dan menolak kematian yang buruk."</p>
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[100px] rounded-full -mr-32 -mt-32">
                     </div>
-                    
+
+                    <div class="relative z-10 max-w-2xl px-2 md:px-0">
+                        <h3
+                            class="text-2xl md:text-4xl font-black text-white mb-3 md:mb-4 leading-tight tracking-tight">
+                            Mari Selesaikan <span class="text-emerald-400 font-bold italic">Pembangunan Musholla (Nanti
+                                bisa diganti)</span>
+                        </h3>
+                        <p class="text-emerald-100/70 text-base md:text-xl font-medium italic leading-relaxed">"Footer
+                            Text"</p>
+                    </div>
+
                     <div class="relative z-10 flex-shrink-0 w-full md:w-auto">
-                        <a href="{{ route('campaigns.index') }}" 
-                           class="inline-flex items-center justify-center gap-3 w-full md:w-auto px-10 py-5 bg-emerald-500 text-white font-black text-lg rounded-3xl hover:bg-emerald-400 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-emerald-950/40 group">
+                        <a href="{{ route('campaigns.index') }}"
+                            class="inline-flex items-center justify-center gap-3 w-full md:w-auto px-10 py-5 bg-emerald-500 text-white font-black text-lg rounded-3xl hover:bg-emerald-400 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-emerald-950/40 group">
                             Donasi Sekarang
-                            <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                             </svg>
                         </a>
                     </div>
@@ -402,19 +465,19 @@
         }
 
         function nextSlide() {
-            if(slides.length === 0) return;
+            if (slides.length === 0) return;
             currentSlide = (currentSlide + 1) % slides.length;
             showSlide(currentSlide);
         }
 
         function prevSlide() {
-            if(slides.length === 0) return;
+            if (slides.length === 0) return;
             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
             showSlide(currentSlide);
         }
 
         // Initialize dots
-        if(slides.length > 0) {
+        if (slides.length > 0) {
             showSlide(0);
         }
 
@@ -425,7 +488,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const navbarBlur = document.getElementById('navbar-blur-bg');
             const mainHeader = document.getElementById('main-header');
-            
+
             // Standard Navbar Blur Scroll Effect
             if (navbarBlur) {
                 window.addEventListener('scroll', () => {

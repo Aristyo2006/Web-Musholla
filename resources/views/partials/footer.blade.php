@@ -8,8 +8,6 @@
                         class="h-16 w-auto drop-shadow-lg">
                     <div class="flex flex-col leading-none">
                         <span class="text-3xl font-black text-white tracking-tighter">AL-KAUTSAR</span>
-                        <span class="text-[10px] text-emerald-400 font-bold tracking-[0.3em] uppercase mt-1">Musholla &
-                            Community</span>
                     </div>
                 </div>
                 <p class="text-gray-400 text-xl leading-relaxed max-w-md mb-12">
