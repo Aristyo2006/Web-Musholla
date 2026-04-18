@@ -9,7 +9,7 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::orderBy('order')->latest()->get();
+        $galleries = Gallery::with('campaign')->orderBy('order')->latest()->get();
         return view('galleries.index', compact('galleries'));
     }
 }

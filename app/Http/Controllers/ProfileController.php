@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Traits\CompressesImages;
 
 class ProfileController extends Controller
 {
+    use CompressesImages;
     /**
      * Display the user's profile form.
      */
@@ -35,7 +37,7 @@ class ProfileController extends Controller
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_picture);
             }
 
-            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $path = $this->compressAndStore($request->file('profile_picture'), 'profiles');
             $user->profile_picture = $path;
         }
 
@@ -44,6 +46,10 @@ class ProfileController extends Controller
         }
 
         $user->save();
+
+        if ($user->isAdmin()) {
+            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

@@ -16,23 +16,23 @@ const LiquidGlassSVG = (() => {
                     <stop offset="0%" stop-color="#F00" />
                     <stop offset="100%" stop-color="#000" />
                 </linearGradient>
-                <clipPath id="mask-circle">
-                    <circle cx="${width / 2}" cy="${height / 2}" r="${radius}" />
+                <clipPath id="mask-shape">
+                    <rect x="0" y="0" width="${width}" height="${height}" rx="${radius}" />
                 </clipPath>
             </defs>
             
             <!-- Default Neutral Grey Background: 128,128,128 (No Displacement) -->
             <rect x="0" y="0" height="${height}" width="${width}" fill="#808080" />
             
-            <!-- Interactive Liquid Layer clipped to the Button Circle -->
-            <g clip-path="url(#mask-circle)" filter="blur(2px)">
+            <!-- Interactive Liquid Layer clipped to the Button Shape -->
+            <g clip-path="url(#mask-shape)" filter="blur(2px)">
                 <!-- Base Max Displacement (B=128 is neutral, R=0 G=0 is max negative) -->
                 <rect x="0" y="0" height="${height}" width="${width}" fill="#000080" />
                 <rect x="0" y="0" height="${height}" width="${width}" fill="url(#Y)" class="mix" />
                 <rect x="0" y="0" height="${height}" width="${width}" fill="url(#X)" class="mix" />
                 
-                <!-- Central Neutral Circle (The 'lens' effect) -->
-                <circle cx="${width / 2}" cy="${height / 2}" r="${radius - depth}" fill="#808080" filter="blur(${depth}px)" />
+                <!-- Central Neutral Shape (The 'lens' effect) -->
+                <rect x="${depth}" y="${depth}" width="${Math.max(0, width - depth * 2)}" height="${Math.max(0, height - depth * 2)}" rx="${Math.max(0, radius - depth)}" fill="#808080" filter="blur(${depth}px)" />
             </g>
         </svg>`;
         return "data:image/svg+xml;utf8," + encodeURIComponent(svgContent.replace(/\s+/g, ' '));

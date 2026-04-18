@@ -103,10 +103,34 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-emerald-50 bg-white/50 backdrop-blur-xl">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="font-bold">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="font-bold">
+                {{ __('Artikel') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.donations.index')" :active="request()->routeIs('admin.donations.*')" class="font-bold">
+                {{ __('Donasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.campaigns.index')" :active="request()->routeIs('admin.campaigns.*')" class="font-bold">
+                {{ __('Program Donasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="font-bold">
+                {{ __('User') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.galleries.index')" :active="request()->routeIs('admin.galleries.*')" class="font-bold">
+                {{ __('Galeri') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.homepage.index')" :active="request()->routeIs('admin.homepage.*')" class="font-bold">
+                {{ __('Homepage') }}
+            </x-responsive-nav-link>
+            
+            <!-- View Website (Mobile Only Extra) -->
+            <x-responsive-nav-link href="/" class="text-emerald-700 font-black flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                Lihat Website
             </x-responsive-nav-link>
         </div>
 

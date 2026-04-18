@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('dashboard', absolute: false));
         }
 
-        return redirect()->intended('/');
+        return redirect()->intended(route('akun', absolute: false));
     }
 
     /**

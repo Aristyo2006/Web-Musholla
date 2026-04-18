@@ -50,7 +50,7 @@
 
         <div class="text-center pt-6 border-t border-white/10">
             <p class="text-emerald-100/40 text-xs">Belum punya akun? 
-                <a href="{{ route('register') }}" class="text-amber-500 font-bold hover:text-amber-400 underline underline-offset-4 transition-colors">Daftar Admin</a>
+                <a href="{{ route('register') }}" class="text-amber-500 font-bold hover:text-amber-400 underline underline-offset-4 transition-colors">Daftar Akun</a>
             </p>
         </div>
     </form>

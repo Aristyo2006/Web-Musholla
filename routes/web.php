@@ -3,22 +3,30 @@
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DonorDashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Setting;
 use App\Models\Article;
 use App\Models\Donation;
 use App\Models\Gallery;
+use App\Models\Campaign;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\GalleryController;
 
 Route::get('/', function () {
     $articles = Article::where('is_published', true)->latest()->take(3)->get();
     $totalDonation = Donation::where('status', 'confirmed')->sum('amount');
-    $featuredGalleries = Gallery::where('is_featured', true)->orderBy('order')->latest()->get();
+    $featuredGalleries = Gallery::where('is_featured', true)
+        ->orWhereNotNull('campaign_id')
+        ->with('campaign')
+        ->orderBy('order')
+        ->latest()
+        ->get();
     $settings = Setting::all()->pluck('value', 'key');
+    $latestCampaign = Campaign::latest()->first();
     
-    return view('welcome', compact('articles', 'totalDonation', 'featuredGalleries', 'settings'));
+    return view('welcome', compact('articles', 'totalDonation', 'featuredGalleries', 'settings', 'latestCampaign'));
 });
 
 Route::get('/artikel', [\App\Http\Controllers\ArticleFrontController::class, 'index'])->name('articles.index');
@@ -30,9 +38,15 @@ Route::get('/donasi/{campaign:slug}', [App\Http\Controllers\DonationFrontControl
 // API Khusus Donasi Frontend Manual
 Route::post('/api/donasi/{campaign}/manual', [App\Http\Controllers\DonationFrontController::class, 'uploadManual'])->name('api.donasi.manual');
 
-Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
+// Admin Dashboard — hanya untuk admin
+Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified', 'admin'])
     ->name('dashboard');
+
+// Donor Dashboard — halaman akun pribadi donatur
+Route::get('/akun', [DonorDashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('akun');
 
 // Redirect admin/dashboard to just /dashboard to avoid 404
 Route::get('/admin/dashboard', function() {
@@ -46,6 +60,8 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::resource('galleries', AdminGalleryController::class);
     Route::resource('users', UserController::class)->only(['index', 'show', 'destroy']);
     Route::patch('users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+    Route::get('campaigns/{campaign}/export', [\App\Http\Controllers\Admin\CampaignController::class, 'export'])->name('campaigns.export');
+    Route::get('campaigns/{campaign}/donators', [\App\Http\Controllers\Admin\CampaignController::class, 'getDonators'])->name('campaigns.donators');
     Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class);
     Route::get('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'index'])->name('homepage.index');
     Route::post('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'update'])->name('homepage.update');

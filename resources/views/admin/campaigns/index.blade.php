@@ -35,7 +35,8 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @forelse($campaigns as $campaign)
-                                <tr class="hover:bg-emerald-50/30 transition-colors">
+                                <tr class="hover:bg-emerald-50/50 transition-colors cursor-pointer group" 
+                                    onclick="window.location='{{ route('admin.campaigns.show', $campaign) }}'">
                                     <td class="py-4 px-6">
                                         <div class="flex items-center gap-4">
                                             @if($campaign->image)
@@ -46,7 +47,7 @@
                                                 </div>
                                             @endif
                                             <div>
-                                                <h3 class="font-bold text-gray-900 line-clamp-1">{{ $campaign->title }}</h3>
+                                                <h3 class="font-bold text-gray-900 line-clamp-1 group-hover:text-emerald-700 transition-colors">{{ $campaign->title }}</h3>
                                                 <p class="text-xs text-gray-500 mt-1">/donasi/{{ $campaign->slug }}</p>
                                             </div>
                                         </div>
@@ -65,14 +66,13 @@
                                             <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full border border-red-200">Nonaktif</span>
                                         @endif
                                     </td>
-                                    <td class="py-4 px-6 text-right space-x-2">
-                                        <a href="{{ route('admin.campaigns.edit', $campaign) }}" class="inline-block p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                        </a>
-                                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus program ini? Semua data donasi di dalamnya mungkin akan hilang atau orphan!')">
+                                    <td class="py-4 px-6 text-right">
+                                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline-block" 
+                                              onclick="event.stopPropagation()"
+                                              onsubmit="return confirm('Yakin ingin menghapus program ini? Semua data donasi di dalamnya mungkin akan hilang atau orphan!')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                            <button type="submit" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all transform hover:scale-110" title="Hapus Program">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>

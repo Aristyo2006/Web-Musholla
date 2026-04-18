@@ -39,7 +39,7 @@
                         <label for="image" class="block font-bold text-gray-700 mb-2">Banner Program</label>
                         <div class="flex items-start gap-6">
                             @if($campaign->image)
-                                <div class="w-32 h-auto shrink-0 rounded-xl overflow-hidden shadow-sm border border-gray-200">
+                                <div class="w-32 h-20 shrink-0 rounded-xl overflow-hidden shadow-sm border border-gray-200">
                                     <img src="{{ Storage::url($campaign->image) }}" alt="Banner" class="w-full h-full object-cover">
                                 </div>
                             @endif
@@ -51,12 +51,121 @@
                         </div>
                     </div>
 
+                    <div class="mb-8 p-6 bg-amber-50/30 rounded-2xl border border-amber-100/50">
+                        <label class="block font-bold text-amber-900 mb-6 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Dokumentasi & Galeri Program
+                        </label>
+                        
+                        {{-- Existing Documentation Photos --}}
+                        @if($campaign->galleries->count() > 0)
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                                @foreach($campaign->galleries as $photo)
+                                    <div class="group relative aspect-video rounded-xl overflow-hidden shadow-sm border border-amber-100">
+                                        <img src="{{ Storage::url($photo->image) }}" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-zinc-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none"></div>
+                                        <button type="button" 
+                                            onclick="if(confirm('Hapus foto dokumentasi ini?')) { document.getElementById('delete-gallery-{{ $photo->id }}').submit(); }"
+                                            class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="mb-8 p-4 bg-white/50 border border-amber-100 border-dashed rounded-xl text-center">
+                                <p class="text-[10px] font-black text-amber-700/40 uppercase tracking-widest">Belum ada dokumentasi ditambahkan</p>
+                            </div>
+                        @endif
+
+                        <div x-data="{ 
+                            files: [],
+                            addFiles(event) {
+                                const selectedFiles = Array.from(event.target.files);
+                                selectedFiles.forEach(file => {
+                                    if (!this.files.some(f => f.name === file.name && f.size === file.size)) {
+                                        this.files.push({
+                                            file: file,
+                                            url: URL.createObjectURL(file),
+                                            name: file.name
+                                        });
+                                    }
+                                });
+                                this.updateInput();
+                            },
+                            removeFile(index) {
+                                URL.revokeObjectURL(this.files[index].url);
+                                this.files.splice(index, 1);
+                                this.updateInput();
+                            },
+                            updateInput() {
+                                const dt = new DataTransfer();
+                                this.files.forEach(f => dt.items.add(f.file));
+                                this.$refs.docInput.files = dt.files;
+                            }
+                        }" class="space-y-4">
+                            <label class="block font-bold text-amber-900 text-sm">Tambah Foto Baru</label>
+                            <input type="file" name="documentation_images[]" x-ref="docInput" multiple accept="image/*" class="hidden" @change="addFiles">
+                            
+                            {{-- Add Button --}}
+                            <div @click="$refs.docInput.click()" 
+                                 class="group cursor-pointer border-4 border-dashed border-amber-200/50 rounded-[2rem] p-8 flex flex-col items-center justify-center bg-white/50 hover:bg-amber-100/50 hover:border-amber-400/50 transition-all duration-300">
+                                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-md">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                </div>
+                                <p class="font-black text-amber-900 uppercase tracking-widest text-xs">Tambah Foto Dokumentasi</p>
+                            </div>
+
+                            {{-- Selected Files Preview --}}
+                            <div x-show="files.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in-up pt-4">
+                                <template x-for="(file, index) in files" :key="index">
+                                    <div class="relative aspect-video rounded-xl overflow-hidden border border-amber-200 shadow-lg group/item">
+                                        <img :src="file.url" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-zinc-950/40 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
+                                        <button type="button" @click="removeFile(index)" class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <p class="text-[10px] text-amber-700/60 font-medium italic pt-2">Pilih satu atau lebih banyak foto sekaligus. Foto akan otomatis muncul di galeri program.</p>
+                            @error('documentation_images') <span class="text-red-500 text-sm mt-1 block font-bold">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
+                        <label class="block font-bold text-emerald-900 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            Pengaturan Form Donasi (Wajib Diisi di Web)
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" name="show_name" value="1" {{ old('show_name', $campaign->show_name) ? 'checked' : '' }} class="rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
+                                <span class="text-sm font-bold text-emerald-800 group-hover:text-emerald-600 transition-colors">Nama</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" name="show_email" value="1" {{ old('show_email', $campaign->show_email) ? 'checked' : '' }} class="rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
+                                <span class="text-sm font-bold text-emerald-800 group-hover:text-emerald-600 transition-colors">Email</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" name="show_message" value="1" {{ old('show_message', $campaign->show_message) ? 'checked' : '' }} class="rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
+                                <span class="text-sm font-bold text-emerald-800 group-hover:text-emerald-600 transition-colors">Pesan</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" name="show_address" value="1" {{ old('show_address', $campaign->show_address) ? 'checked' : '' }} class="rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
+                                <span class="text-sm font-bold text-emerald-800 group-hover:text-emerald-600 transition-colors">Alamat</span>
+                            </label>
+                        </div>
+                        <p class="text-[10px] text-emerald-600 mt-4 leading-relaxed font-medium">Field yang dicentang akan muncul di website dan wajib diisi oleh donatur. Jika Nama tidak dicentang, sistem akan otomatis mencatatnya sebagai "Anonymous".</p>
+                    </div>
+
                     <div class="mb-8 space-y-4">
-                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-start gap-3">
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-start gap-3">
                             <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $campaign->is_active) ? 'checked' : '' }} class="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-300 focus:ring focus:ring-emerald-200 focus:ring-opacity-50 mt-1 cursor-pointer">
                             <div>
-                                <label for="is_active" class="font-bold text-emerald-900 cursor-pointer">Program Aktif</label>
-                                <p class="text-emerald-700 text-xs mt-1">Jika dicentang, program donasi ini akan langsung terbuka dan bisa menerima donasi dari publik (Tampil di Landing Page).</p>
+                                <label for="is_active" class="font-bold text-gray-900 cursor-pointer">Program Aktif</label>
+                                <p class="text-gray-500 text-xs mt-1">Jika dicentang, program donasi ini akan langsung terbuka dan bisa menerima donasi dari publik (Tampil di Landing Page).</p>
                             </div>
                         </div>
                     </div>
@@ -73,4 +182,11 @@
             </div>
         </div>
     </div>
+
+    @foreach($campaign->galleries as $photo)
+        <form id="delete-gallery-{{ $photo->id }}" action="{{ route('admin.galleries.destroy', $photo) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endforeach
 </x-app-layout>

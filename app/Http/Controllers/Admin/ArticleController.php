@@ -7,9 +7,11 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Traits\CompressesImages;
 
 class ArticleController extends Controller
 {
+    use CompressesImages;
     /**
      * Display a listing of the resource.
      */
@@ -40,7 +42,7 @@ class ArticleController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('articles', 'public');
+            $validated['image'] = $this->compressAndStore($request->file('image'), 'articles');
         }
 
         $validated['is_published'] = $request->has('is_published');
@@ -87,7 +89,7 @@ class ArticleController extends Controller
             if ($article->image) {
                 Storage::disk('public')->delete($article->image);
             }
-            $validated['image'] = $request->file('image')->store('articles', 'public');
+            $validated['image'] = $this->compressAndStore($request->file('image'), 'articles');
         }
 
         $validated['is_published'] = $request->has('is_published');

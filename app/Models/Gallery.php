@@ -13,9 +13,15 @@ class Gallery extends Model
         'badge',
         'is_featured',
         'order',
+        'campaign_id',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
     ];
+
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 }

@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\CompressesImages;
 
 class GalleryController extends Controller
 {
+    use CompressesImages;
+
     public function index()
     {
         $galleries = Gallery::orderBy('order')->latest()->get();
@@ -17,7 +21,8 @@ class GalleryController extends Controller
 
     public function create()
     {
-        return view('admin.galleries.create');
+        $campaigns = Campaign::where('is_active', true)->get();
+        return view('admin.galleries.create', compact('campaigns'));
     }
 
     public function store(Request $request)
@@ -28,14 +33,12 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'badge' => 'nullable|string|max:50',
             'is_featured' => 'boolean',
-            'order' => 'integer'
+            'order' => 'integer',
+            'campaign_id' => 'nullable|exists:campaigns,id'
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->extension() ?: 'jpg';
-            $filename = uniqid('img_', true) . '.' . $extension;
-            $validated['image'] = $file->storeAs('galleries', $filename, 'public');
+            $validated['image'] = $this->compressAndStore($file, 'galleries');
         }
 
         $validated['is_featured'] = $request->has('is_featured');
@@ -47,7 +50,8 @@ class GalleryController extends Controller
 
     public function edit(Gallery $gallery)
     {
-        return view('admin.galleries.edit', compact('gallery'));
+        $campaigns = Campaign::where('is_active', true)->get();
+        return view('admin.galleries.edit', compact('gallery', 'campaigns'));
     }
 
     public function update(Request $request, Gallery $gallery)
@@ -58,17 +62,15 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'badge' => 'nullable|string|max:50',
             'is_featured' => 'boolean',
-            'order' => 'integer'
+            'order' => 'integer',
+            'campaign_id' => 'nullable|exists:campaigns,id'
         ]);
 
         if ($request->hasFile('image')) {
             if ($gallery->image) {
                 Storage::disk('public')->delete($gallery->image);
             }
-            $file = $request->file('image');
-            $extension = $file->extension() ?: 'jpg';
-            $filename = uniqid('img_', true) . '.' . $extension;
-            $validated['image'] = $file->storeAs('galleries', $filename, 'public');
+            $validated['image'] = $this->compressAndStore($request->file('image'), 'galleries');
         }
 
         $validated['is_featured'] = $request->has('is_featured');

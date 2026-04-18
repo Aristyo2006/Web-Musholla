@@ -43,6 +43,20 @@
                         @error('description') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
+                    <div class="mb-6">
+                        <label for="campaign_id" class="block font-bold text-gray-700 mb-2">Hubungkan ke Program Donasi (Opsional)</label>
+                        <select name="campaign_id" id="campaign_id" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-200 focus:ring-opacity-50">
+                            <option value="">-- Tidak Dihubungkan --</option>
+                            @foreach($campaigns as $campaign)
+                                <option value="{{ $campaign->id }}" {{ old('campaign_id', $gallery->campaign_id) == $campaign->id ? 'selected' : '' }}>
+                                    {{ $campaign->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <p class="text-gray-400 text-xs mt-1">Jika dihubungkan, foto ini akan muncul sebagai dokumentasi di halaman donasi program tersebut.</p>
+                        @error('campaign_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
                     <div class="mb-6 space-y-4">
                         <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-start gap-3">
                             <input type="checkbox" name="is_featured" id="is_featured" value="1" {{ old('is_featured', $gallery->is_featured) ? 'checked' : '' }} class="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-300 focus:ring focus:ring-emerald-200 focus:ring-opacity-50 mt-1 cursor-pointer">

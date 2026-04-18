@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $article->title }} - {{ config('app.name', 'Donasi Musholla') }}</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    @include('partials.theme-manager')
+    @include('partials.favicons')
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Outfit', sans-serif; }
         .article-content { 
             line-height: 1.9; 
-            font-size: 1.15rem;
-            color: #374151;
+            font-size: 1.25rem;
         }
         .article-content h2 { 
             font-size: 2.25rem; 
             font-weight: 800; 
-            color: #111827; 
             margin-top: 3rem; 
             margin-bottom: 1.5rem;
             letter-spacing: -0.025em;
@@ -28,40 +31,45 @@
             padding-left: 2rem;
             font-style: italic;
             font-size: 1.5rem;
-            color: #064e3b;
             margin: 3rem 0;
             font-weight: 500;
         }
     </style>
 </head>
-<body class="bg-white text-gray-900 scroll-smooth">
+<body class="bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-emerald-50 scroll-smooth selection:bg-emerald-500 selection:text-white transition-colors duration-500">
+    {{-- Decorative Background Blobs --}}
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] rounded-full bg-emerald-600/5 dark:bg-emerald-600/5 blur-[120px] transition-all duration-500"></div>
+        <div class="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-amber-500/5 dark:bg-amber-500/5 blur-[150px] transition-all duration-500"></div>
+    </div>
+
     @include('partials.navbar')
 
-    <main class="pt-40 pb-24">
-        <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="pt-32 sm:pt-48 pb-32 relative z-10">
+        <article class="max-w-5xl mx-auto px-6 lg:px-8">
             <!-- Breadcrumbs -->
-            <nav class="flex items-center gap-2 text-sm font-medium text-gray-400 mb-10 overflow-hidden whitespace-nowrap">
-                <a href="/" class="hover:text-emerald-600 transition-colors">Beranda</a>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                <a href="{{ route('articles.index') }}" class="hover:text-emerald-600 transition-colors">Artikel</a>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                <span class="text-emerald-800 truncate">{{ $article->title }}</span>
+            <nav class="flex items-center gap-3 text-xs font-black text-emerald-700/40 dark:text-emerald-400/40 mb-10 overflow-hidden whitespace-nowrap uppercase tracking-widest transition-colors duration-500">
+                <a href="/" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Beranda</a>
+                <span class="text-zinc-900/10 dark:text-white/10">/</span>
+                <a href="{{ route('articles.index') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Artikel</a>
+                <span class="text-zinc-900/10 dark:text-white/10">/</span>
+                <span class="text-zinc-900/60 dark:text-white/60 truncate">{{ $article->title }}</span>
             </nav>
 
             <!-- Hero Section -->
-            <header class="mb-12 md:mb-16">
-                <div class="flex items-center gap-4 mb-6 md:mb-8">
-                    <span class="px-4 md:px-5 py-1.5 md:py-2 bg-emerald-50 text-emerald-700 text-[10px] md:text-xs font-black uppercase tracking-widest rounded-full shadow-sm">Update Cerita</span>
-                    <span class="text-gray-400 font-bold text-[10px] md:text-sm tracking-tighter">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
+            <header class="mb-16 md:mb-24">
+                <div class="flex items-center gap-5 mb-8 md:mb-12">
+                    <span class="px-5 py-2 bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/20 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-2xl transition-all duration-500">Update Cerita</span>
+                    <span class="text-zinc-400 dark:text-white/20 font-black text-[10px] uppercase tracking-widest transition-colors duration-500">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
                 </div>
                 
-                <h1 class="text-4xl xs:text-5xl md:text-7xl font-black text-gray-900 leading-[1.1] tracking-tighter mb-8 md:mb-12">
+                <h1 class="text-4xl xs:text-5xl md:text-8xl font-black text-zinc-900 dark:text-white leading-[1] tracking-tighter mb-12 md:mb-20 transition-colors duration-500">
                     {{ $article->title }}
                 </h1>
 
-                <div class="flex items-center justify-between py-6 md:py-8 border-y border-gray-100 mb-8 md:mb-12">
-                    <div class="flex items-center gap-3 md:gap-4">
-                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-emerald-700 flex items-center justify-center text-white text-lg md:text-xl font-black overflow-hidden shadow-xl shadow-emerald-900/10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 py-10 border-y border-emerald-100 dark:border-white/5 mb-12 md:mb-20 transition-colors duration-500">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-white dark:bg-white/5 border border-emerald-200 dark:border-white/10 flex items-center justify-center text-zinc-900 dark:text-white text-xl md:text-2xl font-black overflow-hidden shadow-2xl backdrop-blur-xl transition-all duration-500">
                             @if($article->user && $article->user->profile_picture)
                                 <img src="{{ \Illuminate\Support\Facades\Storage::url($article->user->profile_picture) }}" alt="A" class="w-full h-full object-cover">
                             @else
@@ -69,22 +77,30 @@
                             @endif
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">Penulis</p>
-                            <h4 class="text-lg font-black text-gray-900 tracking-tight">{{ $article->user->name ?? 'Admin Musholla' }}</h4>
+                            <p class="text-[10px] font-black text-emerald-700/40 dark:text-emerald-400/40 uppercase tracking-[0.3em] mb-1.5 transition-colors duration-500">Ditulis Oleh</p>
+                            <h4 class="text-xl md:text-2xl font-black text-zinc-900 dark:text-white tracking-tight transition-colors duration-500">{{ $article->user->name ?? 'Admin Musholla' }}</h4>
                         </div>
+                    </div>
+                    
+                    {{-- Share Buttons (Placeholder visual) --}}
+                    <div class="flex items-center gap-3">
+                        <div class="px-6 py-3 bg-white dark:bg-white/5 border border-emerald-200 dark:border-white/10 rounded-2xl text-zinc-400 dark:text-white/40 text-xs font-black uppercase tracking-widest hover:bg-emerald-50 dark:hover:bg-white/10 transition-all cursor-pointer shadow-xl duration-500">Bagikan Cerita</div>
                     </div>
                 </div>
 
                 @if($article->image)
-                    <div class="relative w-full aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl shadow-emerald-900/10">
-                        <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                    <div class="relative w-full aspect-[21/9] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-emerald-100 dark:border-white/5 transition-all duration-500">
+                        <div class="absolute inset-0 bg-emerald-950/10 dark:bg-emerald-950/20 mix-blend-multiply"></div>
+                        <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover grayscale-[0.1] dark:grayscale-0">
                     </div>
                 @endif
             </header>
 
-            <!-- Content Area -->
-            <div class="article-content prose prose-emerald prose-xl max-w-none">
-                {!! nl2br($article->content) !!}
+            <!-- Content Area - Wrapped in Glass Card -->
+            <div class="relative bg-white dark:bg-white/[0.02] backdrop-blur-3xl rounded-[4rem] border border-emerald-100 dark:border-white/5 p-8 md:p-20 shadow-2xl transition-all duration-500">
+                <div class="article-content prose dark:prose-invert prose-emerald prose-2xl max-w-none text-zinc-700 dark:text-emerald-50/80 !leading-[1.8] font-medium transition-colors duration-500">
+                    {!! nl2br($article->content) !!}
+                </div>
             </div>
 
             </div>
@@ -92,18 +108,21 @@
 
         <!-- Related Stories -->
         @if($relatedArticles->count() > 0)
-        <section class="mt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-black text-gray-900 mb-12 flex items-center justify-between">
-                Cerita Lainnya
-                <a href="{{ route('articles.index') }}" class="text-base text-emerald-600 font-bold hover:underline">Lihat Semua</a>
+        <section class="mt-48 max-w-7xl mx-auto px-6 lg:px-8">
+            <h3 class="text-4xl font-black text-zinc-900 dark:text-white mb-16 flex items-center justify-between tracking-tight transition-colors duration-500">
+                Cerita <span class="bg-white dark:bg-white/5 border border-emerald-100 dark:border-white/10 px-6 py-2 rounded-full ml-4 shadow-xl">Lainnya</span>
+                <a href="{{ route('articles.index') }}" class="text-xs text-emerald-700 dark:text-emerald-400 font-black uppercase tracking-widest hover:text-emerald-900 dark:hover:text-white transition-all border-b border-emerald-400/20 pb-1">Lihat Semua</a>
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 @foreach($relatedArticles as $related)
-                    <a href="{{ route('articles.show', $related->slug) }}" class="group block">
-                        <div class="aspect-video rounded-[2rem] overflow-hidden mb-6 shadow-lg shadow-emerald-900/5">
-                            <img src="{{ $related->image ? Storage::url($related->image) : '/images/hero.png' }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <a href="{{ route('articles.show', $related->slug) }}" class="group block h-full bg-white dark:bg-white/5 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden border border-emerald-100 dark:border-white/10 hover:border-emerald-500/20 transition-all duration-500 hover:scale-[1.02] shadow-2xl shadow-emerald-950/5 dark:shadow-none hover:bg-emerald-50 dark:hover:bg-white/[0.08]">
+                        <div class="aspect-video overflow-hidden relative">
+                            <img src="{{ $related->image ? Storage::url($related->image) : '/images/hero.png' }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/40 via-transparent to-transparent opacity-60"></div>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-emerald-700 transition-colors">{{ $related->title }}</h4>
+                        <div class="p-8">
+                            <h4 class="text-xl font-black text-zinc-900 dark:text-white leading-tight line-clamp-2 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors tracking-tight">{{ $related->title }}</h4>
+                        </div>
                     </a>
                 @endforeach
             </div>
