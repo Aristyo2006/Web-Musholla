@@ -34,11 +34,29 @@
                         </div>
                     </div>
 
-                    <div class="mb-8 p-4 border border-gray-100 rounded-2xl bg-gray-50/50">
-                        <label for="image" class="block font-bold text-gray-700 mb-2">Banner Program <span class="text-red-500">*</span></label>
-                        <input type="file" name="image" id="image" required accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all border border-gray-200 rounded-xl cursor-pointer">
-                        <p class="text-gray-400 text-xs mt-2">Gambar format JPG, PNG, WEBP. Ukuran Maks 2MB. Resolusi disarankan 16:9.</p>
-                        @error('image') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                    <div class="mb-8 p-6 border border-emerald-100 rounded-[2rem] bg-emerald-50/20" x-data="{ bannerUrl: null }">
+                        <label for="image" class="block font-black text-emerald-900 mb-4 uppercase tracking-widest text-xs">Banner Utama Program <span class="text-red-500">*</span></label>
+                        
+                        <div x-show="bannerUrl" class="mb-4 animate-fade-in">
+                            <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-2 border-emerald-200">
+                                <img :src="bannerUrl" class="w-full h-full object-cover">
+                                <button type="button" @click="bannerUrl = null; $refs.bannerInput.value = ''" class="absolute top-4 right-4 w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div x-show="!bannerUrl" @click="$refs.bannerInput.click()" class="cursor-pointer border-4 border-dashed border-emerald-200 rounded-[2rem] p-10 flex flex-col items-center justify-center bg-white hover:bg-emerald-50 hover:border-emerald-400 transition-all group">
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            </div>
+                            <p class="font-bold text-emerald-900">Pilih Banner Utama</p>
+                            <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest font-black">Saran: 16:9 (1200x675px)</p>
+                        </div>
+
+                        <input type="file" name="image" id="image" required accept="image/*" x-ref="bannerInput" class="hidden" 
+                               @change="const file = $event.target.files[0]; if(file) { bannerUrl = URL.createObjectURL(file) }">
+                        @error('image') <span class="text-red-500 text-sm mt-3 block font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-8 p-6 bg-amber-50/30 rounded-[2.5rem] border border-amber-100/50" 

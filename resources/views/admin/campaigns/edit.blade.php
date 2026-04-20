@@ -35,20 +35,45 @@
                         </div>
                     </div>
 
-                    <div class="mb-8 p-4 border border-gray-100 rounded-2xl bg-gray-50/50">
-                        <label for="image" class="block font-bold text-gray-700 mb-2">Banner Program</label>
-                        <div class="flex items-start gap-6">
+                    <div class="mb-8 p-6 border border-emerald-100 rounded-[2rem] bg-emerald-50/20" x-data="{ bannerUrl: null }">
+                        <label for="image" class="block font-black text-emerald-900 mb-4 uppercase tracking-widest text-xs">Ganti Banner Utama</label>
+                        
+                        <div class="flex flex-col md:flex-row gap-6">
+                            {{-- Current Banner --}}
                             @if($campaign->image)
-                                <div class="w-32 h-20 shrink-0 rounded-xl overflow-hidden shadow-sm border border-gray-200">
-                                    <img src="{{ Storage::url($campaign->image) }}" alt="Banner" class="w-full h-full object-cover">
+                                <div class="shrink-0" x-show="!bannerUrl">
+                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Saat Ini</p>
+                                    <div class="w-48 aspect-video rounded-xl overflow-hidden shadow-md border border-gray-200">
+                                        <img src="{{ Storage::url($campaign->image) }}" class="w-full h-full object-cover opacity-60">
+                                    </div>
                                 </div>
                             @endif
+
+                            {{-- New Preview / Selector --}}
                             <div class="flex-grow">
-                                <input type="file" name="image" id="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all border border-gray-200 rounded-xl cursor-pointer">
-                                <p class="text-gray-400 text-xs mt-2">Biarkan kosong jika tidak ingin mengubah gambar.</p>
-                                @error('image') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                <div x-show="bannerUrl" class="mb-4 animate-fade-in">
+                                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-2">Pratinjau Gambar Baru</p>
+                                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-2 border-emerald-400">
+                                        <img :src="bannerUrl" class="w-full h-full object-cover">
+                                        <button type="button" @click="bannerUrl = null; $refs.bannerInput.value = ''" class="absolute top-2 right-2 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div x-show="!bannerUrl" @click="$refs.bannerInput.click()" class="cursor-pointer border-4 border-dashed border-emerald-200 rounded-2xl p-6 flex flex-col items-center justify-center bg-white hover:bg-emerald-50 hover:border-emerald-400 transition-all group h-full min-h-[120px]">
+                                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    </div>
+                                    <p class="font-bold text-emerald-900 text-sm">Klik untuk Mengganti Banner</p>
+                                </div>
+
+                                <input type="file" name="image" id="image" accept="image/*" x-ref="bannerInput" class="hidden" 
+                                       @change="const file = $event.target.files[0]; if(file) { bannerUrl = URL.createObjectURL(file) }">
                             </div>
                         </div>
+                        <p class="text-[10px] text-gray-400 mt-4 uppercase tracking-widest font-black italic">Abaikan jika tidak ingin mengubah gambar.</p>
+                        @error('image') <span class="text-red-500 text-sm mt-3 block font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-8 p-6 bg-amber-50/30 rounded-2xl border border-amber-100/50">

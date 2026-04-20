@@ -26,6 +26,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a supervisor (pengawas).
+     */
+    public function isPengawas(): bool
+    {
+        return $this->role === 'pengawas';
+    }
+
+    /**
+     * Check if the user has access to admin area.
+     */
+    public function hasAdminAccess(): bool
+    {
+        return in_array($this->role, ['admin', 'pengawas']);
+    }
+
+    /**
      * Get the user's donations.
      */
     public function donations()

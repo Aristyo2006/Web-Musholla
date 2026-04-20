@@ -21,7 +21,15 @@
 
                     <div class="mb-6">
                         <label for="image" class="block font-bold text-gray-700 mb-2">Ganti Foto (Biarkan kosong jika tidak ingin mengubah)</label>
-                        <input type="file" name="image" id="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all border border-gray-200 rounded-xl cursor-pointer">
+                        <div id="image-preview" class="mb-4 hidden">
+                            <div class="relative w-48 aspect-video rounded-2xl overflow-hidden shadow-lg border-2 border-emerald-100">
+                                <img src="" id="preview-tag" class="w-full h-full object-cover">
+                                <button type="button" onclick="clearImage()" class="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(event)" class="w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all border border-gray-200 rounded-xl cursor-pointer">
                         @error('image') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
@@ -85,4 +93,29 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        function previewImage(event) {
+            const preview = document.getElementById('image-preview');
+            const img = document.getElementById('preview-tag');
+            const file = event.target.files[0];
+            
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearImage() {
+            const preview = document.getElementById('image-preview');
+            const input = document.getElementById('image');
+            input.value = '';
+            preview.classList.add('hidden');
+        }
+    </script>
+    @endpush
 </x-app-layout>

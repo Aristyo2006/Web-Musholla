@@ -41,11 +41,30 @@
 
                             <div>
                                 <label for="image" class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Gambar Unggulan</label>
-                                <div class="px-6 py-10 border-2 border-dashed border-gray-200 rounded-2xl text-center bg-gray-50 hover:bg-emerald-50/50 hover:border-emerald-200 transition-all cursor-pointer relative" id="drop-zone">
-                                    <input type="file" name="image" id="image" class="absolute inset-0 opacity-0 cursor-pointer">
-                                    <svg class="w-10 h-10 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                    <p class="text-sm text-gray-500">Klik atau geser gambar ke sini.</p>
-                                    <p class="text-xs text-gray-400 mt-1">Saran: 1200x800px, Tanpa Batasan Ukuran</p>
+                                <div class="relative group" x-data="{ imageUrl: null }">
+                                    <div class="px-6 py-10 border-2 border-dashed border-gray-200 rounded-2xl text-center bg-gray-50 hover:bg-emerald-50/50 hover:border-emerald-200 transition-all cursor-pointer relative overflow-hidden" 
+                                         id="drop-zone"
+                                         @click="$refs.imageInput.click()">
+                                        
+                                        {{-- Icon & Placeholder --}}
+                                        <div x-show="!imageUrl" class="space-y-4">
+                                            <svg class="w-10 h-10 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                            <p class="text-sm text-gray-500">Klik atau geser gambar ke sini.</p>
+                                            <p class="text-xs text-gray-400 mt-1">Saran: 1200x800px, Tanpa Batasan Ukuran</p>
+                                        </div>
+
+                                        {{-- Image Preview --}}
+                                        <div x-show="imageUrl" class="relative group/preview animate-fade-in">
+                                            <img :src="imageUrl" class="max-h-64 mx-auto rounded-xl shadow-lg border border-emerald-100 object-cover">
+                                            <div class="mt-4">
+                                                <p class="text-sm font-bold text-emerald-900" x-text="$refs.imageInput.files[0]?.name"></p>
+                                                <button type="button" @click.stop="imageUrl = null; $refs.imageInput.value = ''" class="mt-2 text-xs font-black text-red-500 uppercase tracking-widest hover:text-red-700 transition">Hapus & Ganti</button>
+                                            </div>
+                                        </div>
+
+                                        <input type="file" name="image" id="image" x-ref="imageInput" class="hidden" accept="image/*"
+                                               @change="const file = $event.target.files[0]; if(file) { imageUrl = URL.createObjectURL(file) }">
+                                    </div>
                                 </div>
                                 @error('image') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
                             </div>
@@ -85,14 +104,6 @@
                 .replace(/[^\w ]+/g, '')
                 .replace(/ +/g, '-');
             document.getElementById('slug').value = slug;
-        });
-
-        // Image Preview visual
-        document.getElementById('image').addEventListener('change', function() {
-            if(this.files && this.files[0]) {
-                document.querySelector('#drop-zone p').innerText = "Gambar dipilih: " + this.files[0].name;
-                document.querySelector('#drop-zone').classList.add('bg-emerald-100/50', 'border-emerald-300');
-            }
         });
     </script>
     @endpush

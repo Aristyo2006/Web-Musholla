@@ -18,13 +18,17 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if(Auth::user()->isAdmin())
                     <x-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Artikel') }}
                     </x-nav-link>
+                    @endif
 
                     <x-nav-link :href="route('admin.campaigns.index')" :active="request()->routeIs('admin.campaigns.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Program Donasi') }}
                     </x-nav-link>
+
+                    @if(Auth::user()->isAdmin())
                     <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('User') }}
                     </x-nav-link>
@@ -34,6 +38,7 @@
                     <x-nav-link :href="route('admin.homepage.index')" :active="request()->routeIs('admin.homepage.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Homepage') }}
                     </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -106,13 +111,17 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="font-bold">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->isAdmin())
             <x-responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="font-bold">
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
+            @endif
 
             <x-responsive-nav-link :href="route('admin.campaigns.index')" :active="request()->routeIs('admin.campaigns.*')" class="font-bold">
                 {{ __('Program Donasi') }}
             </x-responsive-nav-link>
+
+            @if(Auth::user()->isAdmin())
             <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="font-bold">
                 {{ __('User') }}
             </x-responsive-nav-link>
@@ -122,6 +131,7 @@
             <x-responsive-nav-link :href="route('admin.homepage.index')" :active="request()->routeIs('admin.homepage.*')" class="font-bold">
                 {{ __('Homepage') }}
             </x-responsive-nav-link>
+            @endif
             
             <!-- View Website (Mobile Only Extra) -->
             <x-responsive-nav-link href="/" class="text-emerald-700 font-black flex items-center gap-2">

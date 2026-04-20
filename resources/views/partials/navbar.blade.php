@@ -55,9 +55,9 @@
                                  x-transition:leave-end="opacity-0 scale-95 translate-y-2"
                                  class="absolute right-0 mt-3 w-48 bg-white dark:bg-emerald-950 rounded-2xl shadow-xl shadow-emerald-900/20 border border-zinc-100 dark:border-zinc-800 overflow-hidden z-50">
                                  
-                                 @if(Auth::user()->isAdmin())
+                                 @if(Auth::user()->hasAdminAccess())
                                      <a href="{{ route('dashboard') }}" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 hover:text-emerald-600 dark:hover:text-amber-400 font-medium transition-colors">
-                                         Dashboard Admin
+                                         Dashboard {{ Auth::user()->role === 'admin' ? 'Admin' : 'Pengawas' }}
                                      </a>
                                  @else
                                      <a href="{{ route('akun') }}" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 hover:text-emerald-600 dark:hover:text-amber-400 font-medium transition-colors">
@@ -128,9 +128,9 @@
 
     @if (Route::has('login'))
         @auth
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->hasAdminAccess())
                 <a href="{{ route('dashboard') }}" class="text-xl font-bold text-emerald-600 dark:text-emerald-400"
-                    onclick="toggleMenu()">Dashboard Admin</a>
+                    onclick="toggleMenu()">Dashboard {{ Auth::user()->role === 'admin' ? 'Admin' : 'Pengawas' }}</a>
             @else
                 <a href="{{ route('akun') }}" class="flex items-center gap-3 text-xl font-bold text-emerald-600 dark:text-amber-400"
                     onclick="toggleMenu()">

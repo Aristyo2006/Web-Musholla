@@ -20,6 +20,7 @@
                 </h2>
             </div>
             <div class="flex items-center gap-3">
+                @if(Auth::user()->isAdmin())
                 <a href="{{ route('admin.donations.create', ['campaign_id' => $campaign->id]) }}"
                     class="px-6 py-3 bg-amber-500 text-white font-black rounded-2xl shadow-xl shadow-amber-200 hover:bg-amber-600 transition-all flex items-center gap-2">
                     <svg class="w-5 h-5 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,6 +37,7 @@
                     </svg>
                     Edit Program
                 </a>
+                @endif
                 <a href="{{ route('admin.campaigns.export', $campaign) }}"
                     class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-2xl shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -172,25 +174,29 @@
                                         <span class="text-gray-400 font-bold block mb-1 text-xs uppercase whitespace-nowrap">{{ $donation->created_at->format('d M Y, H:i') }}</span>
                                     </td>
                                     <td class="py-5 px-4">
-                                        <div class="flex flex-col gap-2 items-center justify-center">
-                                            @if($donation->status === 'pending')
-                                                <form action="{{ route('admin.donations.approve', $donation) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 shadow-lg shadow-emerald-200 transition-all w-full">
-                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                                        Approve
-                                                    </button>
-                                                </form>
-                                            @endif
-                                            <form action="{{ route('admin.donations.destroy', $donation) }}" method="POST" onsubmit="return confirm('Hapus donasi ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 transition-all w-full">
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </div>
++                                        @if(Auth::user()->isAdmin())
++                                        <div class="flex flex-col gap-2 items-center justify-center">
++                                            @if($donation->status === 'pending')
++                                                <form action="{{ route('admin.donations.approve', $donation) }}" method="POST">
++                                                    @csrf
++                                                    <button type="submit" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 shadow-lg shadow-emerald-200 transition-all w-full">
++                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
++                                                        Approve
++                                                    </button>
++                                                </form>
++                                            @endif
++                                            <form action="{{ route('admin.donations.destroy', $donation) }}" method="POST" onsubmit="return confirm('Hapus donasi ini?')">
++                                                @csrf
++                                                @method('DELETE')
++                                                <button type="submit" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 transition-all w-full">
++                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
++                                                    Hapus
++                                                </button>
++                                            </form>
++                                        </div>
+++                                        @else
+++                                            <span class="text-[10px] text-gray-400 font-bold italic italic-shadow">RESTRICTED</span>
+++                                        @endif
                                     </td>
                                 </tr>
                             @empty

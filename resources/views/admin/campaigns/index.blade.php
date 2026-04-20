@@ -4,10 +4,12 @@
             <h2 class="font-bold text-xl text-emerald-900 leading-tight">
                 {{ __('Manajemen Program Donasi (Campaigns)') }}
             </h2>
-            <a href="{{ route('admin.campaigns.create') }}" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Buat Program Baru
-            </a>
++            @if(Auth::user()->isAdmin())
++            <a href="{{ route('admin.campaigns.create') }}" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all flex items-center gap-2">
++                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
++                Buat Program Baru
++            </a>
++            @endif
         </div>
     </x-slot>
 
@@ -67,15 +69,19 @@
                                         @endif
                                     </td>
                                     <td class="py-4 px-6 text-right">
-                                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline-block" 
-                                              onclick="event.stopPropagation()"
-                                              onsubmit="return confirm('Yakin ingin menghapus program ini? Semua data donasi di dalamnya mungkin akan hilang atau orphan!')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all transform hover:scale-110" title="Hapus Program">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </form>
++                                        @if(Auth::user()->isAdmin())
++                                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline-block" 
++                                              onclick="event.stopPropagation()"
++                                              onsubmit="return confirm('Yakin ingin menghapus program ini? Semua data donasi di dalamnya mungkin akan hilang atau orphan!')">
++                                            @csrf
++                                            @method('DELETE')
++                                            <button type="submit" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all transform hover:scale-110" title="Hapus Program">
++                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
++                                            </button>
++                                        </form>
++                                        @else
++                                            <span class="text-xs text-gray-400 font-bold italic">Read Only</span>
++                                        @endif
                                     </td>
                                 </tr>
                             @empty

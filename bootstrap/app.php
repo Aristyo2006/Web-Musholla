@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'adminOnly' => \App\Http\Middleware\AdminOnlyMiddleware::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
@@ -20,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectUsersTo(function () {
-            if (auth()->check() && auth()->user()->isAdmin()) {
+            if (auth()->check() && auth()->user()->hasAdminAccess()) {
                 return route('dashboard', absolute: false);
             }
             return '/';

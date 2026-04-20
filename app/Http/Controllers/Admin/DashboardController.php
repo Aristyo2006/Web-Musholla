@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->isAdmin()) {
+        if ($user->hasAdminAccess()) {
             // ===== ADMIN DATA =====
             $totalConfirmedAmount = Donation::where('status', 'confirmed')->sum('amount');
             $pendingDonationsCount = Donation::where('status', 'pending')->count();

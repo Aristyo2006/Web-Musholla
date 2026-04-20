@@ -48,19 +48,47 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Gambar Unggulan</label>
-                                @if($article->image)
-                                    <div class="mb-4 relative group w-fit">
-                                        <img src="{{ Storage::url($article->image) }}" alt="Preview" class="h-32 w-48 object-cover rounded-xl shadow-md border-4 border-white">
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center text-white text-xs font-bold">Ganti Gambar</div>
+                                <label for="image" class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Gambar Unggulan</label>
+                                
+                                <div class="relative group" x-data="{ imageUrl: null }">
+                                    {{-- Container Drop Zone --}}
+                                    <div class="px-6 py-10 border-2 border-dashed border-gray-200 rounded-2xl text-center bg-gray-50 hover:bg-emerald-50/50 hover:border-emerald-200 transition-all cursor-pointer relative overflow-hidden" 
+                                         id="drop-zone"
+                                         @click="$refs.imageInput.click()">
+                                        
+                                        {{-- Current/Placeholder View --}}
+                                        <template x-if="!imageUrl">
+                                            <div class="space-y-4">
+                                                @if($article->image)
+                                                    <div class="mb-4 relative group/old w-fit mx-auto">
+                                                        <img src="{{ Storage::url($article->image) }}" alt="Current" class="h-40 w-64 object-cover rounded-xl shadow-md border-4 border-white">
+                                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/old:opacity-100 transition rounded-xl flex items-center justify-center text-white text-xs font-bold italic uppercase tracking-widest">Gambar Saat Ini</div>
+                                                    </div>
+                                                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Klik atau geser untuk mengganti</p>
+                                                @else
+                                                    <svg class="w-10 h-10 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                                    <p class="text-sm text-gray-500">Klik untuk menambahkan gambar.</p>
+                                                @endif
+                                            </div>
+                                        </template>
+
+                                        {{-- New Image Preview --}}
+                                        <template x-if="imageUrl">
+                                            <div class="animate-fade-in relative group/preview">
+                                                <img :src="imageUrl" class="max-h-64 mx-auto rounded-xl shadow-2xl border-4 border-emerald-400 object-cover">
+                                                <div class="mt-4">
+                                                    <p class="text-xs font-black text-emerald-900 uppercase tracking-widest mb-1 italic">Pratinjau Gambar Baru</p>
+                                                    <p class="text-[10px] text-emerald-600 font-bold mb-2 uppercase tracking-tight" x-text="$refs.imageInput.files[0]?.name"></p>
+                                                    <button type="button" @click.stop="imageUrl = null; $refs.imageInput.value = ''" class="mt-2 text-[10px] font-black text-red-500 uppercase tracking-[0.2em] hover:text-red-700 transition">Batalkan Perubahan</button>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <input type="file" name="image" id="image" x-ref="imageInput" class="hidden" accept="image/*"
+                                               @change="const file = $event.target.files[0]; if(file) { imageUrl = URL.createObjectURL(file) }">
                                     </div>
-                                @endif
-                                <div class="px-6 py-10 border-2 border-dashed border-gray-200 rounded-2xl text-center bg-gray-50 hover:bg-emerald-50/50 hover:border-emerald-200 transition-all cursor-pointer relative" id="drop-zone">
-                                    <input type="file" name="image" id="image" class="absolute inset-0 opacity-0 cursor-pointer">
-                                    <svg class="w-10 h-10 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                    <p class="text-sm text-gray-500">Klik atau geser gambar ke sini untuk mengganti.</p>
-                                    <p class="text-xs text-gray-400 mt-1">Saran: 1200x800px, Tanpa Batasan Ukuran</p>
                                 </div>
+
                                 @error('image') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
                             </div>
                         </div>
@@ -91,16 +119,4 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-    <script>
-        // Image Preview visual
-        document.getElementById('image').addEventListener('change', function() {
-            if(this.files && this.files[0]) {
-                document.querySelector('#drop-zone p').innerText = "Gambar dipilih: " + this.files[0].name;
-                document.querySelector('#drop-zone').classList.add('bg-emerald-100/50', 'border-emerald-300');
-            }
-        });
-    </script>
-    @endpush
 </x-app-layout>

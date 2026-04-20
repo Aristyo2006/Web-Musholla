@@ -99,12 +99,15 @@
                                                 @method('PATCH')
                                                 <select name="role" onchange="this.form.submit()" 
                                                     class="bg-white/50 border-none rounded-full px-4 py-1 text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-emerald-500/20 cursor-pointer shadow-sm
-                                                    @if($user->role === 'admin') text-amber-600 bg-amber-50 @else text-emerald-600 bg-emerald-50 @endif">
+                                                    @if($user->role === 'admin') text-amber-600 bg-amber-50 @elseif($user->role === 'pengawas') text-blue-600 bg-blue-50 @else text-emerald-600 bg-emerald-50 @endif">
                                                     <option value="donatur" {{ $user->role === 'donatur' ? 'selected' : '' }}>Donatur</option>
+                                                    <option value="pengawas" {{ $user->role === 'pengawas' ? 'selected' : '' }}>Pengawas</option>
                                                     <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                                 </select>
                                                 @if($user->role === 'admin')
                                                      <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]"></div>
+                                                @elseif($user->role === 'pengawas')
+                                                     <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_8px_rgba(37,99,235,0.8)]"></div>
                                                 @endif
                                             </form>
                                         </td>

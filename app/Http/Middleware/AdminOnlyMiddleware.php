@@ -6,19 +6,17 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class AdminOnlyMiddleware
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
+     * Handle an incoming request for Admins only.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->hasAdminAccess()) {
+        if (auth()->check() && auth()->user()->role === 'admin') {
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Anda tidak memiliki hak akses area ini.');
+        return redirect()->route('dashboard')->with('error', 'Akses dibatasi hanya untuk Administrator.');
     }
 }

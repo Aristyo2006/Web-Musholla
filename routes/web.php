@@ -54,17 +54,23 @@ Route::get('/admin/dashboard', function() {
 })->middleware(['auth', 'admin']);
 
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('articles', ArticleController::class);
-    Route::post('donations/{donation}/approve', [DonationController::class, 'approve'])->name('donations.approve');
-    Route::resource('donations', DonationController::class);
-    Route::resource('galleries', AdminGalleryController::class);
-    Route::resource('users', UserController::class)->only(['index', 'show', 'destroy']);
-    Route::patch('users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+    // Basic Admin/Staff access (Admin & Pengawas)
     Route::get('campaigns/{campaign}/export', [\App\Http\Controllers\Admin\CampaignController::class, 'export'])->name('campaigns.export');
     Route::get('campaigns/{campaign}/donators', [\App\Http\Controllers\Admin\CampaignController::class, 'getDonators'])->name('campaigns.donators');
-    Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class);
-    Route::get('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'index'])->name('homepage.index');
-    Route::post('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'update'])->name('homepage.update');
+    Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->only(['index', 'show']);
+
+    // Strictly Admin access
+    Route::middleware('adminOnly')->group(function () {
+        Route::resource('articles', ArticleController::class);
+        Route::post('donations/{donation}/approve', [DonationController::class, 'approve'])->name('donations.approve');
+        Route::resource('donations', DonationController::class);
+        Route::resource('galleries', AdminGalleryController::class);
+        Route::resource('users', UserController::class)->only(['index', 'show', 'destroy']);
+        Route::patch('users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+        Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->except(['index', 'show']);
+        Route::get('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'index'])->name('homepage.index');
+        Route::post('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'update'])->name('homepage.update');
+    });
 });
 
 Route::middleware('auth')->group(function () {
