@@ -19,7 +19,13 @@
                     {{ $campaign->title }}
                 </h2>
             </div>
-            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.donations.create', ['campaign_id' => $campaign->id]) }}"
+                    class="px-6 py-3 bg-amber-500 text-white font-black rounded-2xl shadow-xl shadow-amber-200 hover:bg-amber-600 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Catat Manual
+                </a>
                 <a href="{{ route('admin.campaigns.edit', $campaign) }}"
                     class="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-2xl shadow-sm hover:bg-gray-50 transition-all flex items-center gap-2">
                     <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

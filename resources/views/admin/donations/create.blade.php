@@ -24,6 +24,30 @@
                 <form action="{{ route('admin.donations.store') }}" method="POST" class="space-y-8">
                     @csrf
                     
+                    @if(request('campaign_id'))
+                        <input type="hidden" name="campaign_id" value="{{ request('campaign_id') }}">
+                        <input type="hidden" name="redirect_to_campaign" value="1">
+                        <div class="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Catat Untuk Program:</p>
+                                <p class="text-emerald-950 font-black text-lg">{{ $campaigns->find(request('campaign_id'))->title ?? 'Program Pilihan' }}</p>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <label for="campaign_id" class="block text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Pilih Program Donasi</label>
+                            <select name="campaign_id" id="campaign_id" required class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl ring-1 ring-gray-200 focus:ring-2 focus:ring-amber-500 outline-none transition duration-300 font-bold text-gray-700">
+                                <option value="">— Pilih Program —</option>
+                                @foreach($campaigns as $campaign)
+                                    <option value="{{ $campaign->id }}">{{ $campaign->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    
                     <div>
                         <label for="donator_name" class="block text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Nama Donatur</label>
                         <input type="text" name="donator_name" id="donator_name" required placeholder="Hamba Allah / Nama Lengkap"

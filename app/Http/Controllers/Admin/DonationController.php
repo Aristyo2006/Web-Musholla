@@ -23,7 +23,8 @@ class DonationController extends Controller
      */
     public function create()
     {
-        return view('admin.donations.create');
+        $campaigns = \App\Models\Campaign::where('is_active', true)->latest()->get();
+        return view('admin.donations.create', compact('campaigns'));
     }
 
     /**
@@ -32,13 +33,18 @@ class DonationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'campaign_id' => 'required|exists:campaigns,id',
             'donator_name' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
             'status' => 'required|string|in:pending,confirmed,cancelled',
         ]);
 
-        Donation::create($validated);
+        $donation = Donation::create($validated);
+
+        if ($request->has('redirect_to_campaign')) {
+            return redirect()->route('admin.campaigns.show', $donation->campaign_id)->with('success', 'Donasi berhasil dicatat!');
+        }
 
         return redirect()->route('admin.donations.index')->with('success', 'Donasi berhasil dicatat!');
     }
