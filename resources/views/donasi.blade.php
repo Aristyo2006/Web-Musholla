@@ -453,7 +453,7 @@
         </a>
     </div>
 
-    @include('partials.footer')
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
