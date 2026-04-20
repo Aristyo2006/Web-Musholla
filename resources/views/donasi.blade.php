@@ -228,13 +228,39 @@
                             <p
                                 class="text-[9px] font-black text-emerald-400 uppercase tracking-widest text-center border-b border-emerald-100 dark:border-white/5 pb-2">
                                 Transfer Manual</p>
-                            <div
-                                class="bg-emerald-50/50 dark:bg-zinc-800 p-4 rounded-2xl text-center border border-emerald-100 dark:border-white/10">
-                                <p class="text-sm font-black text-emerald-900 dark:text-white tracking-widest">
-                                    1370012345678</p>
-                                <p
-                                    class="text-[8px] font-bold text-emerald-700/40 uppercase tracking-widest mt-1 italic">
-                                    BCA a.n Musholla Al-Kautsar</p>
+                            <div x-data="{ copied: false }"
+                                class="bg-emerald-50/50 dark:bg-zinc-800/80 p-5 rounded-2xl border border-emerald-100 dark:border-white/10 relative group/card transition-all">
+                                <div class="flex flex-col items-center gap-1">
+                                    <div class="flex items-center gap-3">
+                                        <p class="text-xl font-black text-emerald-900 dark:text-white tracking-widest"
+                                            id="account-number">1370012345678</p>
+                                        <button type="button" @click="
+                                                navigator.clipboard.writeText('1370012345678');
+                                                copied = true;
+                                                setTimeout(() => copied = false, 2000);
+                                            "
+                                            class="p-2 bg-emerald-100 dark:bg-white/10 hover:bg-emerald-200 dark:hover:bg-white/20 text-emerald-700 dark:text-amber-500 rounded-xl transition-all active:scale-90"
+                                            title="Copy No. Rekening">
+                                            <svg x-show="!copied" class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                                </path>
+                                            </svg>
+                                            <svg x-show="copied" style="display: none;" class="w-4 h-4 text-emerald-500"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p class="text-[9px] font-bold text-emerald-700/60 dark:text-emerald-400 uppercase tracking-widest italic group-hover/card:text-emerald-500 transition-colors">
+                                        BCA a.n Musholla Al-Kautsar</p>
+                                </div>
+                                <div x-show="copied" x-transition x-cloak
+                                    class="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-2xl pointer-events-none">
+                                    Berhasil Disalin!
+                                </div>
                             </div>
                             <div class="relative h-20 group">
                                 <input type="file" id="proof" name="proof" required accept="image/*"
