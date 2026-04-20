@@ -19,6 +19,7 @@
                     {{ $campaign->title }}
                 </h2>
             </div>
+            <div class="flex items-center gap-3">
                 <a href="{{ route('admin.donations.create', ['campaign_id' => $campaign->id]) }}"
                     class="px-6 py-3 bg-amber-500 text-white font-black rounded-2xl shadow-xl shadow-amber-200 hover:bg-amber-600 transition-all flex items-center gap-2">
                     <svg class="w-5 h-5 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
