@@ -32,11 +32,8 @@
 
                 @if (Route::has('login'))
                     @auth
-                        @if(Auth::user()->isAdmin())
-                            <a href="{{ route('dashboard') }}"
-                                class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full transition shadow-lg shadow-emerald-950/20 text-sm font-bold border border-emerald-500/30">Dashboard Admin</a>
-                        @else
-                            <a href="{{ route('akun') }}"
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" @click.away="open = false" 
                                 class="flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full transition text-sm font-bold backdrop-blur-md">
                                 <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-emerald-950 text-[10px] font-black overflow-hidden shadow-inner">
                                     @if(Auth::user()->profile_picture)
@@ -45,9 +42,37 @@
                                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                     @endif
                                 </div>
-                                Akun Saya
-                            </a>
-                        @endif
+                                <span class="max-w-[100px] truncate">{{ explode(' ', Auth::user()->name)[0] }}</span>
+                                <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            
+                            <div x-show="open" style="display: none;"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                                 class="absolute right-0 mt-3 w-48 bg-white dark:bg-emerald-950 rounded-2xl shadow-xl shadow-emerald-900/20 border border-zinc-100 dark:border-zinc-800 overflow-hidden z-50">
+                                 
+                                 @if(Auth::user()->isAdmin())
+                                     <a href="{{ route('dashboard') }}" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 hover:text-emerald-600 dark:hover:text-amber-400 font-medium transition-colors">
+                                         Dashboard Admin
+                                     </a>
+                                 @else
+                                     <a href="{{ route('akun') }}" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 hover:text-emerald-600 dark:hover:text-amber-400 font-medium transition-colors">
+                                         Profil Saya
+                                     </a>
+                                 @endif
+                                 
+                                 <form method="POST" action="{{ route('logout') }}" class="m-0">
+                                     @csrf
+                                     <button type="submit" class="w-full text-left px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition-colors border-t border-zinc-100 dark:border-zinc-800">
+                                         Log out
+                                     </button>
+                                 </form>
+                            </div>
+                        </div>
                     @else
                         <a href="{{ route('login') }}" class="hover:text-emerald-600 dark:hover:text-amber-400 transition text-sm">Masuk</a>
                     @endauth
