@@ -38,7 +38,7 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $this->compressAndStore($file, 'galleries');
+            $validated['image'] = $this->compressAndStore($request->file('image'), 'galleries');
         }
 
         $validated['is_featured'] = $request->has('is_featured');
