@@ -508,7 +508,7 @@
                     <div class="relative z-10 max-w-2xl px-2 md:px-0">
                         <h3
                             class="text-4xl md:text-6xl font-black text-white mb-6 md:mb-8 leading-tight tracking-tighter">
-                            Mari Selesaikan <span class="text-amber-400 font-bold italic">Rumah Allah</span>
+                            Mari Shodaqo <span class="text-amber-400 font-bold italic">Jariah...</span>
                         </h3>
                         <p
                             class="text-emerald-50/70 dark:text-emerald-100/70 text-xl md:text-2xl font-medium italic leading-relaxed">
