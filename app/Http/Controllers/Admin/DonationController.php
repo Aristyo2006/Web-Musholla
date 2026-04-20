@@ -89,6 +89,6 @@ class DonationController extends Controller
     {
         $donation->delete();
 
-        return redirect()->route('admin.donations.index')->with('success', 'Catatan donasi dihapus!');
+        return back()->with('success', 'Catatan donasi dihapus!');
     }
 }

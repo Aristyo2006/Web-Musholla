@@ -128,38 +128,68 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-gray-50/50 text-gray-400 text-[11px] font-black uppercase tracking-widest">
-                                <th class="py-5 px-8 border-r border-gray-50 text-center w-20">NO</th>
-                                <th class="py-5 px-8 border-r border-gray-50">NAMA DONATUR</th>
-                                <th class="py-5 px-8 border-r border-gray-50">JUMLAH (RP)</th>
-                                <th class="py-5 px-8">TANGGAL & CATATAN</th>
+                                <th class="py-5 px-6 border-r border-gray-50">NAMA DONATUR</th>
+                                <th class="py-5 px-4 border-r border-gray-50">JUMLAH (RP)</th>
+                                <th class="py-5 px-4 border-r border-gray-50 text-center">STATUS</th>
+                                <th class="py-5 px-4 border-r border-gray-50">TANGGAL</th>
+                                <th class="py-5 px-4 text-center">AKSI</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-700 divide-y divide-gray-50">
                             @forelse($donationsLatest as $index => $donation)
                                 <tr class="hover:bg-emerald-50/30 transition-colors group">
-                                    <td class="py-5 px-8 border-r border-gray-50 text-center font-bold text-gray-300">
-                                        {{ $donationsLatest->firstItem() + $index }}
-                                    </td>
-                                    <td class="py-5 px-8 border-r border-gray-50">
+                                    <td class="py-5 px-6 border-r border-gray-50">
                                         <span class="font-black text-emerald-900 block">{{ $donation->donator_name }}</span>
-                                        <span
-                                            class="text-xs text-gray-400 font-medium">{{ $donation->email ?? 'No Email' }}</span>
+                                        <span class="text-xs text-gray-400 font-medium">{{ $donation->email ?? 'No Email' }}</span>
+                                        <p class="text-gray-600 italic line-clamp-1 group-hover:line-clamp-none transition-all cursor-default text-xs mt-1">"{{ $donation->notes ?? '-' }}"</p>
+                                        @if($donation->proof_path)
+                                            <button onclick="window.dispatchEvent(new CustomEvent('open-image-modal', { detail: '{{ Storage::url($donation->proof_path) }}' }))" type="button" class="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-black shadow-sm hover:bg-amber-200 transition-all border border-amber-200 uppercase tracking-widest cursor-pointer">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                                Lihat Bukti
+                                            </button>
+                                        @endif
                                     </td>
-                                    <td class="py-5 px-8 border-r border-gray-50 font-black text-emerald-600 text-lg">
+                                    <td class="py-5 px-4 border-r border-gray-50 font-black text-emerald-600 text-lg whitespace-nowrap">
                                         Rp {{ number_format($donation->amount, 0, ',', '.') }}
                                     </td>
-                                    <td class="py-5 px-8">
-                                        <span
-                                            class="text-gray-400 font-bold block mb-1 text-xs uppercase">{{ $donation->updated_at->format('d M Y, H:i') }}</span>
-                                        <p
-                                            class="text-gray-600 italic line-clamp-1 group-hover:line-clamp-none transition-all cursor-default">
-                                            "{{ $donation->notes ?? '-' }}"</p>
+                                    <td class="py-5 px-4 border-r border-gray-50 text-center">
+                                        @if($donation->status === 'confirmed')
+                                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-wider">Berhasil</span>
+                                        @elseif($donation->status === 'pending')
+                                            <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-wider">Pending</span>
+                                        @else
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded-full text-[10px] font-black uppercase tracking-wider">Batal</span>
+                                        @endif
+                                    </td>
+                                    <td class="py-5 px-4 border-r border-gray-50">
+                                        <span class="text-gray-400 font-bold block mb-1 text-xs uppercase whitespace-nowrap">{{ $donation->created_at->format('d M Y, H:i') }}</span>
+                                    </td>
+                                    <td class="py-5 px-4">
+                                        <div class="flex flex-col gap-2 items-center justify-center">
+                                            @if($donation->status === 'pending')
+                                                <form action="{{ route('admin.donations.approve', $donation) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 shadow-lg shadow-emerald-200 transition-all w-full">
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                        Approve
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            <form action="{{ route('admin.donations.destroy', $donation) }}" method="POST" onsubmit="return confirm('Hapus donasi ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-lg text-[10px] uppercase tracking-widest flex items-center justify-center gap-1 transition-all w-full">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="py-20 text-center text-gray-300 font-bold italic text-lg">
-                                        Belum ada data donasi yang dikonfirmasi.
+                                    <td colspan="5" class="py-20 text-center text-gray-400 font-bold italic text-sm">
+                                        Belum ada data donasi tercatat.
                                     </td>
                                 </tr>
                             @endforelse
@@ -287,4 +317,54 @@
             });
         });
     </script>
+
+    <!-- Alpine Image Modal (Teleported to Body to cover Navbar) -->
+    <div x-data="{ open: false, imageUrl: '', scale: 1, isDragging: false, startX: 0, startY: 0, translateX: 0, translateY: 0 }" 
+         @open-image-modal.window="open = true; imageUrl = $event.detail; scale = 1; translateX = 0; translateY = 0;">
+        <template x-teleport="body">
+            <div x-show="open" 
+                 style="display: none;"
+                 class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-emerald-950/90 backdrop-blur-md"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0">
+                
+                <div class="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden" @click.away="open = false; scale=1; translateX=0; translateY=0;">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between px-6 py-4 bg-gray-50 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        Bukti Transfer Donasi
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <button @click="scale = Math.min(scale + 0.25, 3)" class="w-8 h-8 bg-gray-200 hover:bg-emerald-100 text-gray-700 hover:text-emerald-700 rounded-full flex items-center justify-center transition" title="Zoom In">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                        </button>
+                        <button @click="scale = Math.max(scale - 0.25, 0.5)" class="w-8 h-8 bg-gray-200 hover:bg-emerald-100 text-gray-700 hover:text-emerald-700 rounded-full flex items-center justify-center transition" title="Zoom Out">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"></path></svg>
+                        </button>
+                        <div class="w-px h-5 bg-gray-300 mx-1"></div>
+                        <button @click="open = false" class="w-8 h-8 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-full flex items-center justify-center transition" title="Tutup">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Image Container -->
+                <div class="overflow-hidden w-full flex-grow flex items-center justify-center bg-gray-100 p-4 relative"
+                     x-ref="scrollContainer"
+                     :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
+                     @mousedown="isDragging = true; startX = $event.pageX - translateX; startY = $event.pageY - translateY;"
+                     @mousemove="if(!isDragging) return; $event.preventDefault(); translateX = $event.pageX - startX; translateY = $event.pageY - startY;"
+                     @mouseup="isDragging = false"
+                     @mouseleave="isDragging = false">
+                    <img :src="imageUrl" :style="`transform: translate(${translateX}px, ${translateY}px) scale(${scale}); transform-origin: center; pointer-events: none;`" class="max-w-full h-auto object-contain shadow-sm transition-transform duration-75">
+                </div>
+            </div>
+        </div>
+        </template>
+    </div>
 </x-app-layout>

@@ -154,7 +154,6 @@ class CampaignController extends Controller
         }
 
         $donationsLatest = $campaign->donations()
-            ->where('status', 'confirmed')
             ->latest()
             ->paginate(10);
 

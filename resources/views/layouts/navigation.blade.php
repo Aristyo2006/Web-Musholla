@@ -21,9 +21,7 @@
                     <x-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Artikel') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.donations.index')" :active="request()->routeIs('admin.donations.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
-                        {{ __('Donasi') }}
-                    </x-nav-link>
+
                     <x-nav-link :href="route('admin.campaigns.index')" :active="request()->routeIs('admin.campaigns.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Program Donasi') }}
                     </x-nav-link>
@@ -111,9 +109,7 @@
             <x-responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="font-bold">
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.donations.index')" :active="request()->routeIs('admin.donations.*')" class="font-bold">
-                {{ __('Donasi') }}
-            </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('admin.campaigns.index')" :active="request()->routeIs('admin.campaigns.*')" class="font-bold">
                 {{ __('Program Donasi') }}
             </x-responsive-nav-link>
