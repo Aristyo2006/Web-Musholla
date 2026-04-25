@@ -5,16 +5,36 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__ . '/storage/framework/maintenance.php')) {
+/*
+|--------------------------------------------------------------------------
+| Maintenance Mode
+|--------------------------------------------------------------------------
+*/
+
+if (file_exists($maintenance = __DIR__ . '/../donasi/storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
-// Register the Composer autoloader...
-require __DIR__ . '/vendor/autoload.php';
+/*
+|--------------------------------------------------------------------------
+| Autoload Composer
+|--------------------------------------------------------------------------
+*/
 
-// Bootstrap Laravel and handle the request...
-/** @var Application $app */
-$app = require_once __DIR__ . '/bootstrap/app.php';
+require __DIR__ . '/../donasi/vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Bootstrap Laravel
+|--------------------------------------------------------------------------
+*/
+
+$app = require_once __DIR__ . '/../donasi/bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run App
+|--------------------------------------------------------------------------
+*/
 
 $app->handleRequest(Request::capture());
