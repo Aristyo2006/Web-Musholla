@@ -18,7 +18,7 @@
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Musholla Al-Kautsar"
                         class="h-12 w-auto drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] opacity-100 transition-all duration-500">
                     <div class="flex flex-col leading-none">
-                        <span class="text-[9px] font-black text-amber-500 uppercase tracking-[0.3em] mb-1">Musholla</span>
+                        <span class="text-[9px] font-black text-amber-500 uppercase tracking-[0.3em] mb-1">Yayasan</span>
                         <span class="text-xl font-black tracking-tighter text-white">AL-KAUTSAR</span>
                     </div>
                 </a>

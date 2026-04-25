@@ -9,7 +9,7 @@
                         class="h-16 w-auto drop-shadow-2xl grayscale dark:grayscale-0 transition-all duration-500">
                     <div class="flex flex-col leading-none">
                         <span
-                            class="text-[10px] font-black text-amber-500 uppercase tracking-[0.4em] mb-2 transition-colors">Musholla</span>
+                            class="text-[10px] font-black text-amber-500 uppercase tracking-[0.4em] mb-2 transition-colors">Yayasan</span>
                         <span
                             class="text-3xl font-black text-emerald-900 dark:text-white tracking-tighter transition-colors duration-500">AL-KAUTSAR</span>
                     </div>
