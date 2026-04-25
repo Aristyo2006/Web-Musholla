@@ -1,8 +1,85 @@
 <x-app-layout>
+    @push('styles')
+    <!-- Quill Snow Theme -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Modern Premium Editor Styling */
+        .ql-toolbar.ql-snow {
+            border: 1px solid rgb(229 231 235) !important;
+            border-top-left-radius: 1rem !important;
+            border-top-right-radius: 1rem !important;
+            background: linear-gradient(180deg, #ffffff, #f0fdf4) !important;
+            padding: 1rem !important;
+            border-bottom: none !important;
+        }
+
+        .ql-container.ql-snow {
+            border: 1px solid rgb(229 231 235) !important;
+            border-bottom-left-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+            min-height: 22rem;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 1.05rem !important;
+            background: white !important;
+            transition: all 0.3s ease;
+        }
+
+        .ql-editor {
+            min-height: 22rem;
+            line-height: 1.8 !important;
+            color: #1a2e26 !important;
+            padding: 2rem !important;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: #94a3b8 !important;
+            font-style: italic !important;
+            left: 2rem !important;
+            opacity: 0.6;
+        }
+
+        /* Focus State */
+        .article-editor-wrapper:focus-within .ql-toolbar.ql-snow {
+            border-color: #10b981 !important;
+        }
+        .article-editor-wrapper:focus-within .ql-container.ql-snow {
+            border-color: #10b981 !important;
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Customizing Toolbar Buttons */
+        .ql-snow .ql-stroke { stroke: #064e3b !important; stroke-width: 1.5px !important; }
+        .ql-snow .ql-fill { fill: #064e3b !important; }
+        .ql-snow.ql-toolbar button:hover .ql-stroke { stroke: #10b981 !important; }
+        .ql-snow.ql-toolbar button:hover .ql-fill { fill: #10b981 !important; }
+        .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: #10b981 !important; stroke-width: 2.5px !important; }
+
+        .ql-picker.ql-header .ql-picker-label::before { content: 'Format' !important; font-weight: 700; color: #064e3b; }
+        .ql-picker.ql-header .ql-picker-item[data-value="1"]::before { content: 'Heading 1' !important; }
+        .ql-picker.ql-header .ql-picker-item[data-value="2"]::before { content: 'Heading 2' !important; }
+        .ql-picker.ql-header .ql-picker-item::before { content: 'Normal' !important; }
+
+        /* Typography inside editor */
+        .ql-editor h1 { font-size: 2.5rem !important; font-weight: 900 !important; margin-bottom: 1.5rem !important; color: #064e3b !important; }
+        .ql-editor h2 { font-size: 1.8rem !important; font-weight: 800 !important; margin-bottom: 1.25rem !important; color: #064e3b !important; }
+        .ql-editor p { margin-bottom: 1.25rem !important; }
+        .ql-editor blockquote {
+            border-left: 4px solid #10b981 !important;
+            padding-left: 1.5rem !important;
+            font-style: italic !important;
+            color: #4b5563 !important;
+            background: #f0fdf4 !important;
+            margin: 1.5rem 0 !important;
+            padding: 1rem 1.5rem !important;
+            border-radius: 0 1rem 1rem 0 !important;
+        }
+    </style>
+    @endpush
+
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <a href="{{ route('admin.articles.index') }}" class="w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center text-emerald-900 @hover:bg-emerald-50 transition-all group">
+                <a href="{{ route('admin.articles.index') }}" class="w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center text-emerald-900 hover:bg-emerald-50 transition-all group">
                     <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </a>
                 <h2 class="font-black text-2xl text-emerald-950 leading-tight">
@@ -26,7 +103,7 @@
                         <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded-full text-[10px] font-black uppercase tracking-wider italic">Draft</span>
                     @endif
                 </div>
-                <form action="{{ route('admin.articles.update', $article) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+                <form action="{{ route('admin.articles.update', $article) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6" id="article-form">
                     @csrf
                     @method('PATCH')
                     
@@ -96,9 +173,11 @@
                         <!-- Right Perspective -->
                         <div class="space-y-6">
                             <div>
-                                <label for="content" class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Konten / Isi Artikel</label>
-                                <textarea name="content" id="content" required rows="12"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition duration-300">{{ old('content', $article->content) }}</textarea>
+                                <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Konten / Isi Artikel</label>
+                                <div class="article-editor-wrapper">
+                                    <div id="editor-container"></div>
+                                </div>
+                                <textarea name="content" id="content" required class="hidden">{{ old('content', $article->content) }}</textarea>
                                 @error('content') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
                             </div>
 
@@ -119,4 +198,50 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        document.getElementById('title').addEventListener('input', function() {
+            let slug = this.value.toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
+            document.getElementById('slug').value = slug;
+        });
+
+        // Initialize Quill Editor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Tuliskan berita atau artikel lengkap di sini...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'link'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Sync Quill content to hidden textarea
+        var contentInput = document.getElementById('content');
+        
+        // Load initial content
+        if (contentInput.value) {
+            quill.root.innerHTML = contentInput.value;
+        }
+
+        // On form submit, sync content
+        document.getElementById('article-form').addEventListener('submit', function() {
+            contentInput.value = quill.root.innerHTML;
+        });
+
+        // Optional: Real-time sync
+        quill.on('text-change', function() {
+            contentInput.value = quill.root.innerHTML;
+        });
+    </script>
+    @endpush
 </x-app-layout>

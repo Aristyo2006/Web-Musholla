@@ -23,6 +23,8 @@
             .emerald-gradient { background: linear-gradient(135deg, #064E3B 0%, #065F46 100%); }
             .gold-accent { color: #D97706; }
         </style>
+
+        @stack('styles')
     </head>
     <body class="antialiased bg-gray-50/50">
         <div class="min-h-screen relative overflow-hidden">

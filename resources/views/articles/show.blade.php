@@ -17,6 +17,15 @@
             line-height: 1.9; 
             font-size: 1.25rem;
         }
+        .article-content h1 { 
+            font-size: 2.75rem; 
+            font-weight: 900; 
+            margin-top: 3.5rem; 
+            margin-bottom: 2rem;
+            letter-spacing: -0.025em;
+            color: #064E3B;
+        }
+        .dark .article-content h1 { color: #f8fafc; }
         .article-content h2 { 
             font-size: 2.25rem; 
             font-weight: 800; 
@@ -25,7 +34,33 @@
             letter-spacing: -0.025em;
         }
         .article-content p { margin-bottom: 2rem; }
-        .article-content img { border-radius: 2rem; margin: 3rem auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
+        .article-content h3 {
+            font-size: 1.65rem;
+            font-weight: 800;
+            margin-top: 2.25rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .article-content ul,
+        .article-content ol {
+            margin: 0 0 2rem 1.75rem;
+        }
+        .article-content ul { list-style-type: disc; }
+        .article-content ol { list-style-type: decimal; }
+        .article-content li {
+            margin-bottom: 0.75rem;
+        }
+        .article-content a {
+            color: #059669;
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+        }
+        .article-content strong {
+            font-weight: 800;
+            color: inherit;
+        }
+        .article-content em { font-style: italic; }
+        .article-content img { border-radius: 2rem; margin: 3rem auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); max-width: 100%; height: auto; }
         .article-content blockquote {
             border-left: 6px solid #10b981;
             padding-left: 2rem;
@@ -99,7 +134,7 @@
             <!-- Content Area - Wrapped in Glass Card -->
             <div class="relative bg-white dark:bg-white/[0.02] backdrop-blur-3xl rounded-[4rem] border border-emerald-100 dark:border-white/5 p-8 md:p-20 shadow-2xl transition-all duration-500">
                 <div class="article-content prose dark:prose-invert prose-emerald prose-2xl max-w-none text-zinc-700 dark:text-emerald-50/80 !leading-[1.8] font-medium transition-colors duration-500">
-                    {!! nl2br($article->content) !!}
+                    {!! $article->content !!}
                 </div>
             </div>
 

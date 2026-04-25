@@ -32,6 +32,7 @@ Route::get('/', function () {
 Route::get('/artikel', [\App\Http\Controllers\ArticleFrontController::class, 'index'])->name('articles.index');
 Route::get('/artikel/{slug}', [\App\Http\Controllers\ArticleFrontController::class, 'show'])->name('articles.show');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('galleries.index');
+Route::get('/cari', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
 Route::get('/program-donasi', [App\Http\Controllers\CampaignFrontController::class, 'index'])->name('campaigns.index');
 Route::get('/donasi/{campaign:slug}', [App\Http\Controllers\DonationFrontController::class, 'index'])->name('donasi.index');
 

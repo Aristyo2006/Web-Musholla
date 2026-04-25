@@ -15,6 +15,107 @@
     <script src="/js/liquid-glass-svg.js"></script>
     <style>
         body { font-family: 'Outfit', sans-serif; }
+        .modal-image-frame {
+            position: relative;
+            isolation: isolate;
+            touch-action: none;
+        }
+        .modal-magnifier-lens {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: clamp(124px, 14vw, 172px);
+            aspect-ratio: 1;
+            border-radius: 9999px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate3d(-50%, -50%, 0) scale(0.92);
+            transition:
+                opacity 220ms ease,
+                transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+            z-index: 20;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow:
+                0 20px 45px rgba(15, 23, 42, 0.24),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.22);
+            background-color: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            background-repeat: no-repeat;
+            will-change: transform, opacity, left, top, background-position, background-size;
+        }
+        .dark .modal-magnifier-lens {
+            border-color: rgba(255, 255, 255, 0.55);
+            box-shadow:
+                0 20px 45px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+            background-color: rgba(6, 78, 59, 0.08);
+        }
+        .modal-magnifier-lens.is-active {
+            opacity: 1;
+            transform: translate3d(-50%, -50%, 0) scale(1);
+            box-shadow:
+                0 28px 60px rgba(15, 23, 42, 0.28),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.26);
+        }
+        .modal-magnifier-lens::before {
+            content: '';
+            position: absolute;
+            inset: 6%;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            mix-blend-mode: screen;
+        }
+        .modal-magnifier-lens::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background:
+                radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.12) 18%, rgba(255, 255, 255, 0) 38%),
+                linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+        }
+        .modal-magnifier-liquid {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            z-index: 1;
+            background:
+                radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 30%, rgba(255, 255, 255, 0) 55%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        .modal-magnifier-handle {
+            position: absolute;
+            right: 14%;
+            bottom: -18%;
+            width: 68px;
+            height: 16px;
+            border-radius: 9999px;
+            transform: rotate(38deg);
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(5, 150, 105, 0.95));
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+        }
+        .dark .modal-magnifier-handle {
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        }
+        .modal-magnifier-hint {
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 15;
+            pointer-events: none;
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+        .modal-image-frame.is-magnifying .modal-magnifier-hint {
+            opacity: 0;
+            transform: translateY(6px);
+        }
         .modal-scroll-area::-webkit-scrollbar {
             width: 4px;
         }
@@ -118,9 +219,17 @@
         <div id="modal-container" class="relative w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 scale-90 transition-all duration-700 ease-out">
             
             <!-- Image Area (Fixed/Static) -->
-            <div class="relative w-full lg:flex-1 lg:sticky lg:top-32 flex items-center justify-center rounded-[3rem] overflow-hidden bg-white/50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 group transition-all duration-500 shadow-2xl">
+            <div id="modal-image-frame" class="modal-image-frame relative w-full lg:flex-1 lg:sticky lg:top-32 flex items-center justify-center rounded-[3rem] overflow-hidden bg-white/50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 group transition-all duration-500 shadow-2xl">
                 <img id="modal-img" src="" alt="Full view" class="block w-full h-auto max-h-[45vh] md:max-h-[65vh] lg:max-h-[80vh] object-contain group-hover:scale-[1.02] transition-transform duration-1000">
                 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/10 dark:from-zinc-950/20 to-transparent pointer-events-none transition-colors duration-500"></div>
+                <div id="modal-magnifier-hint" class="modal-magnifier-hint inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/65 dark:bg-zinc-950/45 backdrop-blur-xl border border-white/40 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.24em] text-emerald-700 dark:text-emerald-300 shadow-xl">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Arahkan untuk zoom
+                </div>
+                <div id="modal-magnifier-lens" class="modal-magnifier-lens hidden" aria-hidden="true">
+                    <div id="modal-magnifier-liquid" class="modal-magnifier-liquid"></div>
+                    <div class="modal-magnifier-handle"></div>
+                </div>
             </div>
 
             <!-- Content Area (Independent Scroll) -->
@@ -177,6 +286,121 @@
             const modalDonationContainer = document.getElementById('modal-donation-container');
             const modalCampaignName = document.getElementById('modal-campaign-name');
             const modalDonationBtn = document.getElementById('modal-donation-btn');
+            const modalImageFrame = document.getElementById('modal-image-frame');
+            const modalMagnifierLens = document.getElementById('modal-magnifier-lens');
+            const modalMagnifierLiquid = document.getElementById('modal-magnifier-liquid');
+            const modalMagnifierHint = document.getElementById('modal-magnifier-hint');
+            const lensZoom = 2.6;
+            const lensPadding = 4;
+            const mobileLensOffset = 84;
+            const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+            let hideMagnifierTimer = null;
+            let touchMagnifierActive = false;
+
+            const updateMagnifierFilter = () => {
+                if (typeof LiquidGlassSVG === 'undefined') {
+                    modalMagnifierLiquid.style.backdropFilter = 'blur(0px)';
+                    modalMagnifierLiquid.style.webkitBackdropFilter = 'blur(0px)';
+                    return;
+                }
+
+                const lensRect = modalMagnifierLens.getBoundingClientRect();
+                if (!lensRect.width || !lensRect.height) {
+                    return;
+                }
+
+                const rimFilterUrl = LiquidGlassSVG.getDisplacementFilter({
+                    height: Math.ceil(lensRect.height),
+                    width: Math.ceil(lensRect.width),
+                    radius: lensRect.width / 2,
+                    depth: 3,
+                    strength: 95,
+                    chromaticAberration: 16
+                });
+
+                modalMagnifierLiquid.style.backdropFilter = `blur(0.5px) url("${rimFilterUrl}")`;
+                modalMagnifierLiquid.style.webkitBackdropFilter = `blur(0.5px) url("${rimFilterUrl}")`;
+            };
+
+            const hideMagnifier = () => {
+                modalImageFrame.classList.remove('is-magnifying');
+                modalMagnifierLens.classList.remove('is-active');
+                touchMagnifierActive = false;
+                if (hideMagnifierTimer) {
+                    clearTimeout(hideMagnifierTimer);
+                }
+                hideMagnifierTimer = setTimeout(() => {
+                    modalMagnifierLens.classList.add('hidden');
+                    hideMagnifierTimer = null;
+                }, 220);
+            };
+
+            const showMagnifier = () => {
+                if (hideMagnifierTimer) {
+                    clearTimeout(hideMagnifierTimer);
+                    hideMagnifierTimer = null;
+                }
+                modalImageFrame.classList.add('is-magnifying');
+                modalMagnifierLens.classList.remove('hidden');
+                updateMagnifierFilter();
+                requestAnimationFrame(() => {
+                    modalMagnifierLens.classList.add('is-active');
+                });
+            };
+
+            const updateMagnifier = (clientX, clientY) => {
+                if (!modalImg.src) {
+                    hideMagnifier();
+                    return;
+                }
+
+                const imageRect = modalImg.getBoundingClientRect();
+                const frameRect = modalImageFrame.getBoundingClientRect();
+
+                if (!imageRect.width || !imageRect.height) {
+                    hideMagnifier();
+                    return;
+                }
+
+                const insideImage = (
+                    clientX >= imageRect.left &&
+                    clientX <= imageRect.right &&
+                    clientY >= imageRect.top &&
+                    clientY <= imageRect.bottom
+                );
+
+                if (!insideImage) {
+                    hideMagnifier();
+                    return;
+                }
+
+                showMagnifier();
+
+                const lensSize = modalMagnifierLens.offsetWidth;
+                const lensRadius = lensSize / 2;
+                const relativeX = clientX - imageRect.left;
+                const relativeY = clientY - imageRect.top;
+                const minX = Math.min(lensRadius + lensPadding, imageRect.width / 2);
+                const maxX = Math.max(imageRect.width - lensRadius - lensPadding, imageRect.width / 2);
+                const minY = Math.min(lensRadius + lensPadding, imageRect.height / 2);
+                const maxY = Math.max(imageRect.height - lensRadius - lensPadding, imageRect.height / 2);
+                const clampedX = clamp(relativeX, minX, maxX);
+                const clampedY = clamp(relativeY, minY, maxY);
+                const shouldOffsetForTouch = window.innerWidth < 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+                const visualY = shouldOffsetForTouch
+                    ? clamp(clampedY - mobileLensOffset, minY, maxY)
+                    : clampedY;
+                const lensLeft = (imageRect.left - frameRect.left) + clampedX;
+                const lensTop = (imageRect.top - frameRect.top) + visualY;
+                const bgX = -((clampedX * lensZoom) - lensRadius);
+                const bgY = -((clampedY * lensZoom) - lensRadius);
+
+                modalMagnifierLens.style.left = `${lensLeft}px`;
+                modalMagnifierLens.style.top = `${lensTop}px`;
+                modalMagnifierLens.style.backgroundImage = `url("${modalImg.currentSrc || modalImg.src}")`;
+                modalMagnifierLens.style.backgroundSize = `${imageRect.width * lensZoom}px ${imageRect.height * lensZoom}px`;
+                modalMagnifierLens.style.backgroundPosition = `${bgX}px ${bgY}px`;
+            };
 
             // Find all gallery cards
             const cards = document.querySelectorAll('.gallery-card');
@@ -212,6 +436,7 @@
                     
                     modal.classList.remove('opacity-0', 'pointer-events-none');
                     modal.classList.add('opacity-100', 'pointer-events-auto');
+                    hideMagnifier();
                     
                     setTimeout(() => {
                         container.classList.remove('scale-90');
@@ -224,6 +449,7 @@
 
             // Global close function available to the window
             window.closeModal = function() {
+                hideMagnifier();
                 container.classList.remove('scale-100');
                 container.classList.add('scale-90');
                 
@@ -233,6 +459,43 @@
                     document.body.style.overflow = '';
                 }, 150);
             };
+
+            modalImageFrame.addEventListener('mousemove', (event) => {
+                updateMagnifier(event.clientX, event.clientY);
+            });
+
+            modalImageFrame.addEventListener('mouseleave', () => {
+                hideMagnifier();
+            });
+
+            modalImageFrame.addEventListener('touchstart', (event) => {
+                const touch = event.touches[0];
+                if (touch) {
+                    touchMagnifierActive = true;
+                    updateMagnifier(touch.clientX, touch.clientY);
+                }
+            }, { passive: true });
+
+            modalImageFrame.addEventListener('touchmove', (event) => {
+                const touch = event.touches[0];
+                if (touch) {
+                    if (touchMagnifierActive) {
+                        event.preventDefault();
+                    }
+                    updateMagnifier(touch.clientX, touch.clientY);
+                }
+            }, { passive: false });
+
+            modalImageFrame.addEventListener('touchend', hideMagnifier, { passive: true });
+            modalImageFrame.addEventListener('touchcancel', hideMagnifier, { passive: true });
+
+            modalImg.addEventListener('load', () => {
+                hideMagnifier();
+            });
+
+            new ResizeObserver(() => {
+                updateMagnifierFilter();
+            }).observe(modalMagnifierLens);
         });
     </script>
     @include('partials.footer')
