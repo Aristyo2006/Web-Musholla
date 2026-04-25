@@ -348,30 +348,49 @@
             </div>
         </form>
 
-        <!-- Quick Links -->
-        <div class="mt-8 md:mt-10 flex flex-wrap gap-2 md:gap-3 justify-center">
-            <span
-                class="w-full md:w-auto text-center md:text-left text-[10px] md:text-[11px] font-bold text-emerald-900/30 dark:text-white/30 uppercase tracking-widest self-center select-none md:mr-2 mb-2 md:mb-0">
-                Jelajahi
-            </span>
-            <a href="{{ route('campaigns.index') }}"
-                class="adaptive-chip px-4 py-2 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl text-emerald-900/70 dark:text-white/70 text-xs md:text-sm font-semibold hover:text-emerald-600 dark:hover:text-white">
-                Program
-            </a>
-            <a href="{{ route('articles.index') }}"
-                class="adaptive-chip px-4 py-2 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl text-emerald-900/70 dark:text-white/70 text-xs md:text-sm font-semibold hover:text-emerald-600 dark:hover:text-white">
-                Artikel
-            </a>
-            <a href="{{ route('galleries.index') }}"
-                class="adaptive-chip px-4 py-2 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl text-emerald-900/70 dark:text-white/70 text-xs md:text-sm font-semibold hover:text-emerald-600 dark:hover:text-white">
-                Galeri
-            </a>
+        <!-- Quick Explore -->
+        <div class="mt-10 md:mt-12 flex flex-col items-center gap-5">
+            {{-- Divider with Label --}}
+            <div class="flex items-center gap-4 w-full max-w-sm">
+                <div class="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
+                <span class="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-600/40 dark:text-emerald-400/30 select-none">
+                    Jelajahi
+                </span>
+                <div class="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
+            </div>
+
+            {{-- Icon Chips --}}
+            <div class="flex flex-wrap gap-3 justify-center">
+                <a href="{{ route('campaigns.index') }}"
+                    class="group flex items-center gap-2.5 px-5 py-2.5 rounded-2xl border transition-all duration-300 hover:scale-105 active:scale-95"
+                    style="background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); color: rgba(16,185,129,0.8);"
+                    onmouseover="this.style.background='rgba(16,185,129,0.18)'; this.style.borderColor='rgba(16,185,129,0.5)'; this.style.color='rgb(16,185,129)';"
+                    onmouseout="this.style.background='rgba(16,185,129,0.08)'; this.style.borderColor='rgba(16,185,129,0.2)'; this.style.color='rgba(16,185,129,0.8)';">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    <span class="text-xs font-black uppercase tracking-wider">Program Donasi</span>
+                </a>
+                <a href="{{ route('articles.index') }}"
+                    class="group flex items-center gap-2.5 px-5 py-2.5 rounded-2xl border transition-all duration-300 hover:scale-105 active:scale-95"
+                    style="background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); color: rgba(245,158,11,0.8);"
+                    onmouseover="this.style.background='rgba(245,158,11,0.18)'; this.style.borderColor='rgba(245,158,11,0.5)'; this.style.color='rgb(245,158,11)';"
+                    onmouseout="this.style.background='rgba(245,158,11,0.08)'; this.style.borderColor='rgba(245,158,11,0.2)'; this.style.color='rgba(245,158,11,0.8)';">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span class="text-xs font-black uppercase tracking-wider">Artikel</span>
+                </a>
+                <a href="{{ route('galleries.index') }}"
+                    class="group flex items-center gap-2.5 px-5 py-2.5 rounded-2xl border transition-all duration-300 hover:scale-105 active:scale-95"
+                    style="background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.2); color: rgba(139,92,246,0.8);"
+                    onmouseover="this.style.background='rgba(139,92,246,0.18)'; this.style.borderColor='rgba(139,92,246,0.5)'; this.style.color='rgb(139,92,246)';"
+                    onmouseout="this.style.background='rgba(139,92,246,0.08)'; this.style.borderColor='rgba(139,92,246,0.2)'; this.style.color='rgba(139,92,246,0.8)';">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span class="text-xs font-black uppercase tracking-wider">Galeri Foto</span>
+                </a>
+            </div>
         </div>
 
         <!-- Keyboard hint -->
-        <p
-            class="text-center mt-12 text-[10px] text-emerald-900/20 dark:text-white/20 font-medium tracking-widest select-none">
-            ESC UNTUK MENUTUP &nbsp; | &nbsp; CTRL + K UNTUK MENCARI
+        <p class="text-center mt-10 text-[9px] text-emerald-900/15 dark:text-white/15 font-bold tracking-[0.4em] uppercase select-none">
+            ESC tutup &nbsp;·&nbsp; Ctrl+K buka
         </p>
     </div>
 </div>
