@@ -294,7 +294,7 @@
                                             </h3>
                                             <p
                                                 class="text-emerald-50/80 text-[10px] md:text-xl font-medium line-clamp-2 md:line-clamp-3 italic max-w-2xl">
-                                                {{ $gallery->campaign->description ?? ($gallery->description ?? 'Bersama membangun kebaikan untuk masa depan.') }}
+                                                {{ $gallery->description ?? '' }}
                                             </p>
                                         </div>
 

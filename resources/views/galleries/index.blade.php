@@ -168,7 +168,7 @@
                 <div class="group relative rounded-[3rem] overflow-hidden shadow-2xl shadow-emerald-950/5 dark:shadow-none aspect-square bg-white dark:bg-white/5 gallery-card border border-emerald-100 dark:border-white/5 cursor-pointer hover:border-emerald-500/30 transition-all duration-700 hover:scale-[1.02]" 
                      data-src="{{ Storage::url($gallery->image) }}"
                      data-title="{{ $gallery->title }}"
-                     data-description="{{ $gallery->campaign->description ?? ($gallery->description ?? '') }}"
+                     data-description="{{ $gallery->description ?? '' }}"
                      data-badge="{{ strtoupper($gallery->badge ?? '') }}"
                      data-campaign-slug="{{ $gallery->campaign->slug ?? '' }}"
                      data-campaign-title="{{ $gallery->campaign->title ?? '' }}">
