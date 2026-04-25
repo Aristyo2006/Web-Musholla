@@ -27,7 +27,7 @@ class DonationAdminNotificationMail extends Mailable
                 config('mail.from.address', 'admin@yysalkautsar.or.id'),
                 'Sistem Donasi Al-Kautsar'
             ),
-            subject: '[DONASI BARU] ' . $donation->donator_name . ' — Rp ' . number_format($donation->amount, 0, ',', '.'),
+            subject: '[DONASI BARU] ' . $this->donation->donator_name . ' — Rp ' . number_format($this->donation->amount, 0, ',', '.'),
         );
     }
 
