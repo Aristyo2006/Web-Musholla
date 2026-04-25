@@ -233,9 +233,9 @@
                                 <div class="flex flex-col items-center gap-1">
                                     <div class="flex items-center gap-3">
                                         <p class="text-xl font-black text-emerald-900 dark:text-white tracking-widest"
-                                            id="account-number">1370012345678</p>
+                                            id="account-number">7721422813</p>
                                         <button type="button" @click="
-                                                navigator.clipboard.writeText('1370012345678');
+                                                navigator.clipboard.writeText('7721422813');
                                                 copied = true;
                                                 setTimeout(() => copied = false, 2000);
                                             "
