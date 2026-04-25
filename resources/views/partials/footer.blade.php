@@ -16,7 +16,7 @@
                 </div>
                 <p
                     class="text-zinc-500 dark:text-emerald-300/40 text-xl leading-relaxed max-w-md mb-12 font-medium italic transition-colors duration-500">
-                    Wadah kebaikan untuk membangun masa depan Musholla Al-Kautsar yang lebih nyaman bagi seluruh jamaah.
+                    wadah kebaikan untuk membangun masa depan Musholla Al-Kautsar yang lebih nyaman bagi seluruh jamaah.
                 </p>
                 <div class="flex gap-6">
                     <a href="https://www.instagram.com/alkautsar.tamanjimbaran/" target="_blank"
