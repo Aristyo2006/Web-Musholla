@@ -171,12 +171,12 @@
                                 class="block text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Pilih
                                 Nominal</label>
                             <div class="grid grid-cols-3 gap-2 px-1">
+                                <button type="button" onclick="setNominal(10000, this)"
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">10K</button>
                                 <button type="button" onclick="setNominal(50000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50k</button>
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50K</tton>
                                 <button type="button" onclick="setNominal(100000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100k</button>
-                                <button type="button" onclick="setNominal(500000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">500k</button>
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100K</button>
                             </div>
                             <div class="relative group">
                                 <span
@@ -255,7 +255,7 @@
                                         </button>
                                     </div>
                                     <p class="text-[9px] font-bold text-emerald-700/60 dark:text-emerald-400 uppercase tracking-widest italic group-hover/card:text-emerald-500 transition-colors">
-                                        BCA a.n Musholla Al-Kautsar</p>
+                                        BCA a.n YAYASAN AL KAUTSAR TAMAN</p>
                                 </div>
                                 <div x-show="copied" x-transition x-cloak
                                     class="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-2xl pointer-events-none">
