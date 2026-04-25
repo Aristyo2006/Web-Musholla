@@ -56,8 +56,8 @@
                 <p
                     class="text-zinc-500 dark:text-emerald-300/40 leading-loose mb-10 font-bold italic transition-colors duration-500">
                     Musholla Al-Kautsar<br>
-                    Jl. Kebaikan No. 123,<br>
-                    Kota Denpasar, Bali
+                    Jl. Melati No.68, Taman, Kec. Kuta Selatan,<br>
+                    Kabupaten Badung, Bali
                 </p>
             </div>
         </div>
