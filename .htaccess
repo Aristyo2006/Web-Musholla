@@ -1,6 +1,4 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
-    # Forward everything to the public folder
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
