@@ -163,7 +163,7 @@
             <h1 class="text-4xl xs:text-5xl sm:text-7xl lg:text-8xl font-black text-white hero-title mb-6 md:mb-10 animate-fade-in-up leading-[1.1] tracking-tight"
                 style="animation-delay: 0.1s">
                 {!! nl2br(e($settings['hero_title'] ?? "Selamat Datang di Website\n")) !!}<span
-                    class="gold-accent italic">{{ $settings['hero_subtitle_accent'] ?? ' Yayasan  Al-Kautsar '}}</span>
+                    class="gold-accent italic">{{ $settings['hero_subtitle_accent'] ?? ' Yayasan Al-Kautsar' }}</span>
             </h1>
             <p class="text-lg md:text-2xl text-emerald-50/80 mb-10 md:mb-16 max-w-2xl mx-auto animate-fade-in-up leading-relaxed"
                 style="animation-delay: 0.2s">

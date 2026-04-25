@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Donation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CompressesImages;
+use App\Mail\DonationPendingMail;
+use App\Mail\DonationAdminNotificationMail;
 
 class DonationFrontController extends Controller
 {
@@ -55,6 +58,21 @@ class DonationFrontController extends Controller
             'proof_path' => $path,
             'notes' => $request->notes ?? ('Donasi: ' . $campaign->title),
         ]);
+
+        // Send emails (non-blocking)
+        try {
+            // A: Email pending ke donatur (jika email tersedia)
+            if ($donation->email) {
+                Mail::to($donation->email)->send(new DonationPendingMail($donation));
+            }
+
+            // B: Notifikasi ke admin
+            $adminEmail = config('mail.from.address', 'admin@yysalkautsar.or.id');
+            Mail::to($adminEmail)->send(new DonationAdminNotificationMail($donation));
+
+        } catch (\Exception $e) {
+            Log::error('Gagal kirim email donasi pending: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,
