@@ -25,8 +25,9 @@ Route::get('/', function () {
         ->get();
     $settings = Setting::all()->pluck('value', 'key');
     $latestCampaign = Campaign::latest()->first();
+    $testimonials = \App\Models\Testimonial::where('is_active', true)->latest()->get();
     
-    return view('welcome', compact('articles', 'totalDonation', 'featuredGalleries', 'settings', 'latestCampaign'));
+    return view('welcome', compact('articles', 'totalDonation', 'featuredGalleries', 'settings', 'latestCampaign', 'testimonials'));
 });
 
 Route::get('/artikel', [\App\Http\Controllers\ArticleFrontController::class, 'index'])->name('articles.index');
@@ -71,13 +72,19 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
         Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->except(['index', 'show']);
         Route::get('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'index'])->name('homepage.index');
         Route::post('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'update'])->name('homepage.update');
+        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
+        Route::post('pages/upload-image', [\App\Http\Controllers\Admin\PageController::class, 'uploadImage'])->name('pages.uploadImage');
+        Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class)->except(['show']);
     });
 });
 
+// Dynamic Page Routes
+Route::get('/halaman/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

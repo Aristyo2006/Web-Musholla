@@ -24,8 +24,9 @@
                 </a>
             </div>
 
-            <div class="hidden lg:flex items-center gap-8 text-white font-medium">
+            <div class="hidden lg:flex items-center gap-4 xl:gap-8 text-white font-medium text-sm xl:text-base whitespace-nowrap">
                 <a href="{{ url('/#hero') }}" class="hover:text-amber-400 transition">Beranda</a>
+                <a href="{{ route('pages.show', 'tentang-kami') }}" class="hover:text-amber-400 transition">Tentang Kami</a>
                 <a href="{{ route('campaigns.index') }}" class="hover:text-amber-400 transition">Program Donasi</a>
                 <a href="{{ route('galleries.index') }}" class="hover:text-amber-400 transition">Galeri</a>
                 <a href="{{ route('articles.index') }}" class="hover:text-amber-400 transition">Artikel</a>
@@ -34,7 +35,7 @@
                     @auth
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" @click.away="open = false"
-                                class="flex items-center gap-2 px-5 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full transition text-sm font-bold backdrop-blur-md">
+                                class="flex items-center gap-2 px-3 xl:px-5 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full transition text-xs xl:text-sm font-bold backdrop-blur-md">
                                 <div
                                     class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-emerald-950 text-[10px] font-black overflow-hidden shadow-inner">
                                     @if(Auth::user()->profile_picture)
@@ -88,7 +89,7 @@
                 @endif
 
                 <a href="{{ route('campaigns.index') }}"
-                    class="ml-2 px-6 py-2 rounded-full bg-emerald-600 dark:bg-amber-500 text-white dark:text-emerald-950 font-bold shadow-lg shadow-emerald-600/20 dark:shadow-amber-500/20 hover:scale-105 hover:bg-emerald-700 dark:hover:bg-amber-400 transition-all text-sm">
+                    class="ml-1 xl:ml-2 px-4 xl:px-6 py-2 rounded-full bg-emerald-600 dark:bg-amber-500 text-white dark:text-emerald-950 font-bold shadow-lg shadow-emerald-600/20 dark:shadow-amber-500/20 hover:scale-105 hover:bg-emerald-700 dark:hover:bg-amber-400 transition-all text-xs xl:text-sm whitespace-nowrap">
                     Donasi Sekarang
                 </a>
 
@@ -152,6 +153,9 @@
     <a href="{{ url('/#hero') }}"
         class="text-3xl font-black hover:text-emerald-600 dark:hover:text-amber-400 transition"
         onclick="toggleMenu()">Beranda</a>
+    <a href="{{ route('pages.show', 'tentang-kami') }}"
+        class="text-3xl font-black hover:text-emerald-600 dark:hover:text-amber-400 transition"
+        onclick="toggleMenu()">Tentang Kami</a>
     <a href="{{ route('campaigns.index') }}"
         class="text-3xl font-black hover:text-emerald-600 dark:hover:text-amber-400 transition"
         onclick="toggleMenu()">Program Donasi</a>
@@ -188,6 +192,7 @@
                 <button type="submit" class="text-xl font-bold text-red-500 dark:text-red-400">Logout</button>
             </form>
         @else
+            <a href="{{ route('pages.show', 'tentang-kami') }}" class="text-3xl font-black hover:text-emerald-600 dark:hover:text-amber-400 transition" onclick="toggleMenu()">Tentang Kami</a>
             <a href="{{ route('login') }}"
                 class="text-3xl font-black hover:text-emerald-600 dark:hover:text-amber-400 transition"
                 onclick="toggleMenu()">Masuk</a>

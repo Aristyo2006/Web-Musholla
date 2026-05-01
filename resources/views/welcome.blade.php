@@ -503,6 +503,86 @@
                 @endforeach
             </div>
 
+            <!-- See All Articles Button -->
+            <div class="mt-12 text-center">
+                <a href="{{ route('articles.index') }}" class="inline-flex items-center gap-3 px-8 py-4 bg-emerald-50 dark:bg-white/5 text-emerald-700 dark:text-emerald-400 font-black rounded-2xl hover:bg-emerald-100 dark:hover:bg-white/10 transition-all border border-emerald-200 dark:border-white/10 group">
+                    Lihat Semua Artikel
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+
+            @if($testimonials->count() > 0)
+            <!-- Testimonials Section -->
+            <div class="mt-24" style="margin-top: 100px;">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white mb-6 tracking-tight">
+                        Apa Kata <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400 dark:from-emerald-400 dark:to-amber-300">Mereka?</span>
+                    </h2>
+                    <p class="text-zinc-500 dark:text-emerald-100/40 text-lg font-medium italic">Kisah dan kesan dari jamaah serta donatur Musholla Al-Kautsar.</p>
+                </div>
+
+                <div class="relative group">
+                    <!-- Scroll Container -->
+                    <div id="testimonial-scroll" class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide cursor-grab select-none">
+                        <div class="flex-shrink-0 w-6"></div>
+                        @foreach($testimonials as $testimonial)
+                        <div class="testimonial-card flex-shrink-0 bg-white dark:bg-zinc-900 p-4 rounded-3xl border border-emerald-100 dark:border-white/5 shadow-lg snap-center flex flex-col items-center text-center">
+                            <!-- Avatar -->
+                            <div class="mb-3 w-full">
+                                @if($testimonial->avatar)
+                                    <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="rounded-2xl object-cover shadow" style="width: 100%; aspect-ratio: 1/1;">
+                                @else
+                                    <div class="rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/40 dark:to-emerald-800/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black uppercase shadow" style="width: 100%; aspect-ratio: 1/1; font-size: 2.5rem;">
+                                        {{ substr($testimonial->name, 0, 1) }}
+                                    </div>
+                                @endif
+                            </div>
+                            <!-- Name & Role -->
+                            <h4 class="font-black text-zinc-900 dark:text-white text-base tracking-tight leading-tight">{{ $testimonial->name }}</h4>
+                            <p class="text-emerald-600 dark:text-emerald-400 font-bold text-xs mt-0.5 uppercase tracking-wider">{{ $testimonial->role }}</p>
+                            <!-- Divider -->
+                            <div class="w-8 h-1 bg-emerald-500 rounded-full my-3 mx-auto"></div>
+                            <!-- Quote -->
+                            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed italic text-xs">"{{ $testimonial->content }}"</p>
+                        </div>
+                        @endforeach
+                        <div class="flex-shrink-0 w-6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .scrollbar-hide::-webkit-scrollbar { display: none; }
+                .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+                #testimonial-scroll.active { cursor: grabbing; }
+                .testimonial-card { width: 170px; min-width: 170px; }
+                @media (min-width: 768px) {
+                    .testimonial-card { width: 260px; min-width: 260px; }
+                }
+            </style>
+            <script>
+                (function() {
+                    const slider = document.getElementById('testimonial-scroll');
+                    if (!slider) return;
+                    let isDown = false, startX, scrollLeft;
+                    slider.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        slider.classList.add('active');
+                        startX = e.pageX - slider.offsetLeft;
+                        scrollLeft = slider.scrollLeft;
+                    });
+                    slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
+                    slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+                    slider.addEventListener('mousemove', (e) => {
+                        if (!isDown) return;
+                        e.preventDefault();
+                        const x = e.pageX - slider.offsetLeft;
+                        slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
+                    });
+                })();
+            </script>
+            @endif
+
             <!-- Subtle Donation CTA -->
             <div class="mt-24 md:mt-32">
                 <div

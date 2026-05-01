@@ -28,10 +28,10 @@ class DonationFrontController extends Controller
             'proof' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048'
         ];
 
-        if ($campaign->show_name) $rules['donator_name'] = 'required|string|max:255';
-        if ($campaign->show_email) $rules['email'] = 'required|email|max:255';
-        if ($campaign->show_address) $rules['donator_address'] = 'required|string|max:500';
-        if ($campaign->show_message) $rules['notes'] = 'required|string|max:1000';
+        if ($campaign->show_name) $rules['donator_name'] = 'nullable|string|max:255';
+        if ($campaign->show_email) $rules['email'] = 'nullable|email|max:255';
+        if ($campaign->show_address) $rules['donator_address'] = 'nullable|string|max:500';
+        if ($campaign->show_message) $rules['notes'] = 'nullable|string|max:1000';
 
         $request->validate($rules);
 
@@ -42,7 +42,7 @@ class DonationFrontController extends Controller
         // Anonymous logic
         $donatorName = $request->donator_name;
         if (!$campaign->show_name || empty($donatorName)) {
-            $donatorName = 'Anonymous';
+            $donatorName = 'Anonim';
         }
 
         $donation = Donation::create([

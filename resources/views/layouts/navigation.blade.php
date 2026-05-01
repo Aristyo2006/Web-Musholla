@@ -38,6 +38,12 @@
                     <x-nav-link :href="route('admin.homepage.index')" :active="request()->routeIs('admin.homepage.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
                         {{ __('Homepage') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.pages.index')" :active="request()->routeIs('admin.pages.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
+                        {{ __('Tentang Kami') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.*')" class="text-emerald-950 font-bold border-b-2 hover:text-emerald-600">
+                        {{ __('Testimoni') }}
+                    </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -130,6 +136,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.homepage.index')" :active="request()->routeIs('admin.homepage.*')" class="font-bold">
                 {{ __('Homepage') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.pages.index')" :active="request()->routeIs('admin.pages.*')" class="font-bold">
+                {{ __('Tentang Kami') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.*')" class="font-bold">
+                {{ __('Testimoni') }}
             </x-responsive-nav-link>
             @endif
             

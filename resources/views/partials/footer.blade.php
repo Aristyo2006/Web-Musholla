@@ -6,7 +6,7 @@
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center gap-4 mb-8">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Musholla Al-Kautsar"
-                        class="h-16 w-auto drop-shadow-2xl grayscale dark:grayscale-0 transition-all duration-500">
+                        class="h-16 w-auto drop-shadow-2xl transition-all duration-500">
                     <div class="flex flex-col leading-none">
                         <span
                             class="text-[10px] font-black text-amber-500 uppercase tracking-[0.4em] mb-2 transition-colors">Yayasan</span>
@@ -36,6 +36,9 @@
                     class="space-y-6 text-zinc-500 dark:text-emerald-300/40 font-black text-sm uppercase tracking-widest transition-colors duration-500">
                     <li><a href="{{ url('/') }}"
                             class="hover:text-emerald-600 dark:hover:text-amber-400 transition-all hover:translate-x-1 inline-block">Beranda</a>
+                    </li>
+                    <li><a href="{{ route('pages.show', 'tentang-kami') }}"
+                            class="hover:text-emerald-600 dark:hover:text-amber-400 transition-all hover:translate-x-1 inline-block">Tentang Kami</a>
                     </li>
                     <li><a href="{{ route('campaigns.index') }}"
                             class="hover:text-emerald-600 dark:hover:text-amber-400 transition-all hover:translate-x-1 inline-block">Program

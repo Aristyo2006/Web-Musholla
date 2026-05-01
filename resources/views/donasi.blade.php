@@ -51,6 +51,41 @@
 
     @include('partials.navbar', ['transparentTheme' => false])
 
+    <!-- Anonim Confirmation Modal -->
+    <div id="anonim-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6"
+        style="animation: none;">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-zinc-950/60 backdrop-blur-md" onclick="closeAnonimModal()" id="anonim-backdrop"
+            style="opacity:0; transition: opacity 0.3s ease;"></div>
+        <!-- Modal Box -->
+        <div id="anonim-box"
+            class="relative bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl shadow-emerald-900/20 border border-emerald-100 dark:border-white/10 text-center"
+            style="opacity:0; transform: scale(0.85) translateY(20px); transition: opacity 0.35s cubic-bezier(0.34,1.56,0.64,1), transform 0.35s cubic-bezier(0.34,1.56,0.64,1);">
+            <div
+                class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-2 tracking-tight">Kirim sebagai Anonim?</h3>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-8">
+                Anda tidak mengisi informasi donatur. Donasi akan tercatat atas nama <span
+                    class="font-black text-emerald-600">"Anonim"</span>. Lanjutkan?
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeAnonimModal()"
+                    class="flex-1 py-3 rounded-2xl border border-gray-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-all">
+                    Batal, Isi Dulu
+                </button>
+                <button onclick="confirmAnonim()"
+                    class="flex-1 py-3 rounded-2xl bg-emerald-600 text-white font-black text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20">
+                    Ya, Kirim!
+                </button>
+            </div>
+        </div>
+    </div>
+
     <main class="pt-32 pb-32 px-6 lg:px-8 max-w-7xl mx-auto min-h-screen relative z-10 transition-all duration-500">
         <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
 
@@ -174,9 +209,10 @@
                                 <button type="button" onclick="setNominal(10000, this)"
                                     class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">10K</button>
                                 <button type="button" onclick="setNominal(50000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50K</tton>
-                                <button type="button" onclick="setNominal(100000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100K</button>
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50K
+                                    </tton>
+                                    <button type="button" onclick="setNominal(100000, this)"
+                                        class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100K</button>
                             </div>
                             <div class="relative group">
                                 <span
@@ -195,9 +231,10 @@
                             <div class="space-y-4">
                                 @if($campaign->show_name)
                                     <div class="relative group">
-                                        <input type="text" id="donator_name" name="donator_name" required
+                                        <input type="text" id="donator_name" name="donator_name"
                                             class="w-full bg-white dark:bg-zinc-800/50 border border-emerald-100 dark:border-white/10 rounded-2xl px-5 py-4 text-xs font-bold focus:border-emerald-500 outline-none transition-all"
-                                            placeholder="Nama Lengkap *" onfocus="showInfoSuggestion('donator_name')">
+                                            placeholder="Nama Lengkap (kosongkan untuk Anonim)"
+                                            onfocus="showInfoSuggestion('donator_name')">
                                         @auth
                                             <div id="donator_name_suggestion"
                                                 class="hidden absolute left-0 -bottom-10 z-20 bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow-xl text-[9px] font-black uppercase tracking-widest cursor-pointer"
@@ -207,19 +244,19 @@
                                     </div>
                                 @endif
                                 @if($campaign->show_email)
-                                    <input type="email" id="email" name="email" required
+                                    <input type="email" id="email" name="email"
                                         class="w-full bg-white dark:bg-zinc-800/50 border border-emerald-100 dark:border-white/10 rounded-2xl px-5 py-4 text-xs font-bold focus:border-emerald-500 outline-none transition-all"
-                                        placeholder="Email *">
+                                        placeholder="Email (kosongkan untuk Anonim)">
                                 @endif
                                 @if($campaign->show_address)
-                                    <input type="text" id="donator_address" name="donator_address" required
+                                    <input type="text" id="donator_address" name="donator_address"
                                         class="w-full bg-white dark:bg-zinc-800/50 border border-emerald-100 dark:border-white/10 rounded-2xl px-5 py-4 text-xs font-bold focus:border-emerald-500 outline-none transition-all"
-                                        placeholder="Alamat *">
+                                        placeholder="Alamat (kosongkan untuk Anonim)">
                                 @endif
                                 @if($campaign->show_message)
-                                    <textarea id="notes" name="notes" required rows="2"
+                                    <textarea id="notes" name="notes" rows="2"
                                         class="w-full bg-white dark:bg-zinc-800/50 border border-emerald-100 dark:border-white/10 rounded-2xl px-6 py-4 text-xs font-medium italic focus:border-emerald-500 outline-none transition-all"
-                                        placeholder="Doa & Pesan *"></textarea>
+                                        placeholder="Doa & Pesan (opsional)"></textarea>
                                 @endif
                             </div>
                         </div>
@@ -254,7 +291,8 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <p class="text-[9px] font-bold text-emerald-700/60 dark:text-emerald-400 uppercase tracking-widest italic group-hover/card:text-emerald-500 transition-colors">
+                                    <p
+                                        class="text-[9px] font-bold text-emerald-700/60 dark:text-emerald-400 uppercase tracking-widest italic group-hover/card:text-emerald-500 transition-colors">
                                         BCA a.n YAYASAN AL KAUTSAR TAMAN</p>
                                 </div>
                                 <div x-show="copied" x-transition x-cloak
@@ -367,25 +405,83 @@
             document.getElementById('upload-btn').innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Upload Bukti Transfer <span class="text-red-500">*</span>`;
         }
 
-        async function submitDonation() {
-            const btn = document.getElementById('submit-btn');
-            const originalText = btn.innerHTML;
+        function isAllInfoEmpty() {
+            const name = document.getElementById('donator_name');
+            const email = document.getElementById('email');
+            const address = document.getElementById('donator_address');
+            const notes = document.getElementById('notes');
+            return (
+                (!name || !name.value.trim()) &&
+                (!email || !email.value.trim()) &&
+                (!address || !address.value.trim()) &&
+                (!notes || !notes.value.trim())
+            );
+        }
 
+        function showAnonimModal() {
+            const modal = document.getElementById('anonim-modal');
+            const backdrop = document.getElementById('anonim-backdrop');
+            const box = document.getElementById('anonim-box');
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                backdrop.style.opacity = '1';
+                box.style.opacity = '1';
+                box.style.transform = 'scale(1) translateY(0)';
+            });
+        }
+
+        function closeAnonimModal() {
+            const modal = document.getElementById('anonim-modal');
+            const backdrop = document.getElementById('anonim-backdrop');
+            const box = document.getElementById('anonim-box');
+            backdrop.style.opacity = '0';
+            box.style.opacity = '0';
+            box.style.transform = 'scale(0.85) translateY(20px)';
+            setTimeout(() => modal.classList.add('hidden'), 350);
+        }
+
+        function confirmAnonim() {
+            const name = document.getElementById('donator_name');
+            if (name) name.value = 'Anonim';
+            closeAnonimModal();
+            doSendDonation();
+        }
+
+        async function submitDonation() {
             const proofFile = document.getElementById('proof').files[0];
             if (!proofFile) {
                 showToast('Mohon unggah bukti transfer gambar!', true);
                 return;
             }
 
+            const amount = document.getElementById('amount').value;
+            if (!amount || parseInt(amount) < 10000) {
+                showToast('Nominal donasi minimal Rp 10.000!', true);
+                return;
+            }
+
+            if (isAllInfoEmpty()) {
+                showAnonimModal();
+                return;
+            }
+
+            doSendDonation();
+        }
+
+        async function doSendDonation() {
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerHTML;
+
             btn.disabled = true;
             btn.classList.add('opacity-50', 'scale-95');
             btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-emerald-950 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...`;
 
+            const proofFile = document.getElementById('proof').files[0];
             const formData = new FormData();
             formData.append('amount', document.getElementById('amount').value);
 
             if (document.getElementById('donator_name')) {
-                formData.append('donator_name', document.getElementById('donator_name').value);
+                formData.append('donator_name', document.getElementById('donator_name').value || 'Anonim');
             }
             if (document.getElementById('email')) {
                 formData.append('email', document.getElementById('email').value);
@@ -402,9 +498,7 @@
             try {
                 const response = await fetch("{{ route('api.donasi.manual', $campaign) }}", {
                     method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                    },
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value },
                     body: formData
                 });
 
