@@ -18,7 +18,6 @@
         .modal-image-frame {
             position: relative;
             isolation: isolate;
-            touch-action: none;
         }
         .modal-magnifier-lens {
             position: absolute;
@@ -219,8 +218,8 @@
         <div id="modal-container" class="relative w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 scale-90 transition-all duration-700 ease-out">
             
             <!-- Image Area (Fixed/Static) -->
-            <div id="modal-image-frame" class="modal-image-frame relative w-full lg:flex-1 lg:sticky lg:top-32 flex items-center justify-center rounded-[3rem] overflow-hidden bg-white/50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 group transition-all duration-500 shadow-2xl">
-                <img id="modal-img" src="" alt="Full view" class="block w-full h-auto max-h-[45vh] md:max-h-[65vh] lg:max-h-[80vh] object-contain group-hover:scale-[1.02] transition-transform duration-1000">
+            <div id="modal-image-frame" class="modal-image-frame relative w-full lg:w-auto lg:max-w-[65%] lg:sticky lg:top-32 flex items-center justify-center rounded-[3rem] bg-white/50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 group transition-all duration-500 shadow-2xl">
+                <img id="modal-img" src="" alt="Full view" class="block w-auto h-auto max-w-full max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh] object-contain rounded-[2.5rem] group-hover:scale-[1.01] transition-transform duration-1000">
                 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/10 dark:from-zinc-950/20 to-transparent pointer-events-none transition-colors duration-500"></div>
                 <div id="modal-magnifier-hint" class="modal-magnifier-hint inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/65 dark:bg-zinc-950/45 backdrop-blur-xl border border-white/40 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.24em] text-emerald-700 dark:text-emerald-300 shadow-xl">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -441,11 +440,31 @@
                     setTimeout(() => {
                         container.classList.remove('scale-90');
                         container.classList.add('scale-100');
+                        
+                        // Detect orientation after a short delay for src to load
+                        if (modalImg.complete) {
+                            checkOrientation();
+                        } else {
+                            modalImg.onload = checkOrientation;
+                        }
                     }, 10);
                     
                     document.body.style.overflow = 'hidden';
                 });
             });
+
+            function checkOrientation() {
+                if (modalImg.naturalHeight > modalImg.naturalWidth) {
+                    modalImageFrame.classList.add('is-portrait');
+                    // For portrait, we allow it to be narrower and much shorter to keep content visible
+                    modalImageFrame.style.maxWidth = 'min(480px, 95%)';
+                    modalImg.style.maxHeight = '65vh';
+                } else {
+                    modalImageFrame.classList.remove('is-portrait');
+                    modalImageFrame.style.maxWidth = '';
+                    modalImg.style.maxHeight = '';
+                }
+            }
 
             // Global close function available to the window
             window.closeModal = function() {

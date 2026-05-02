@@ -2,8 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-black text-2xl text-emerald-950 leading-tight">
-                {{ __('Tentang Kami') }}
+                {{ __('Halaman Statis') }}
             </h2>
+            <a href="{{ route('admin.pages.create') }}" class="px-6 py-2.5 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-all text-xs uppercase tracking-widest">
+                Tambah Halaman
+            </a>
         </div>
     </x-slot>
 

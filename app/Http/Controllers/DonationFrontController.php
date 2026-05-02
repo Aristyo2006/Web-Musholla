@@ -18,6 +18,10 @@ class DonationFrontController extends Controller
     public function index(\App\Models\Campaign $campaign)
     {
         $campaign->load('galleries');
+        $campaign->loadSum(['donations' => function($query) {
+            $query->where('status', 'confirmed');
+        }], 'amount');
+        
         return view('donasi', compact('campaign'));
     }
 

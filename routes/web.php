@@ -72,6 +72,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
         Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->except(['index', 'show']);
         Route::get('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'index'])->name('homepage.index');
         Route::post('homepage', [\App\Http\Controllers\Admin\HomepageController::class, 'update'])->name('homepage.update');
+        Route::get('pages/tentang-kami', [\App\Http\Controllers\Admin\PageController::class, 'editAboutUs'])->name('about.edit');
         Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
         Route::post('pages/upload-image', [\App\Http\Controllers\Admin\PageController::class, 'uploadImage'])->name('pages.uploadImage');
         Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class)->except(['show']);

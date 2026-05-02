@@ -5,6 +5,31 @@
         </h2>
     </x-slot>
 
+    @push('styles')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-toolbar.ql-snow {
+            border: 1px solid #e5e7eb;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            background: #f9fafb;
+            padding: 12px;
+            border-bottom: none;
+        }
+        .ql-container.ql-snow {
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            min-height: 300px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            background: white;
+        }
+        .ql-editor { min-height: 300px; }
+        .ql-editor.ql-blank::before { color: #9ca3af; font-style: normal; }
+    </style>
+    @endpush
+
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-3xl border border-emerald-100 p-8">
@@ -19,7 +44,8 @@
 
                     <div class="mb-6">
                         <label for="description" class="block font-bold text-gray-700 mb-2">Penjelasan Lengkap Program <span class="text-red-500">*</span></label>
-                        <textarea name="description" id="description" rows="5" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-200 focus:ring-opacity-50" placeholder="Jelaskan secara rinci untuk apa dana ini akan digunakan..."></textarea>
+                        <div id="editor-container" class="bg-gray-50 rounded-2xl"></div>
+                        <textarea name="description" id="description" class="hidden" required></textarea>
                         @error('description') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
@@ -171,4 +197,28 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Tuliskan deskripsi lengkap program di sini...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link', 'clean']
+                ]
+            }
+        });
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
+    </script>
+    @endpush
 </x-app-layout>

@@ -61,33 +61,8 @@
                         <h2 class="text-3xl font-black text-zinc-900 dark:text-white mb-4 leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors tracking-tighter">{{ $campaign->title }}</h2>
                         <p class="text-zinc-500 dark:text-emerald-100/30 text-base mb-8 line-clamp-3 leading-relaxed font-medium italic transition-colors duration-500">"{{ $campaign->description }}"</p>
 
-                        <!-- Progress Bar Area -->
+                        <!-- Progress Bar Area Removed (Moved to Detail Page) -->
                         <div class="mt-auto">
-                            @if($campaign->target_amount)
-                                @php
-                                    $collected = $campaign->donations_sum_amount ?? 0;
-                                    $percentage = min(100, ($collected / $campaign->target_amount) * 100);
-                                @endphp
-                                <div class="flex justify-between items-end mb-3">
-                                    <div class="text-emerald-700/60 dark:text-emerald-300/60 font-black text-[10px] uppercase tracking-widest transition-colors duration-500">Dana Terkumpul</div>
-                                    <div class="text-xs font-black bg-emerald-600/10 dark:bg-amber-500/20 text-emerald-700 dark:text-amber-500 px-3 py-1 rounded-xl border border-emerald-600/20 dark:border-amber-500/20 transition-all duration-500">{{ number_format($percentage, 0) }}%</div>
-                                </div>
-                                <div class="h-5 bg-emerald-950/5 dark:bg-white/5 rounded-full overflow-hidden border border-emerald-900/10 dark:border-white/10 shadow-inner mb-4 p-1 transition-colors duration-500">
-                                    <div class="h-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 dark:from-amber-500 dark:via-amber-400 dark:to-amber-300 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all duration-1000" style="width: {{ $percentage }}%"></div>
-                                </div>
-                                <div class="flex justify-between text-xs text-zinc-400 dark:text-white/40 font-black mb-8 uppercase tracking-tighter transition-colors duration-500">
-                                    <span class="text-emerald-700 dark:text-white">Rp {{ number_format($collected, 0, ',', '.') }}</span>
-                                    <span>Target: Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}</span>
-                                </div>
-                            @else
-                                <!-- No Target Display -->
-                                @php $collected = $campaign->donations_sum_amount ?? 0; @endphp
-                                <div class="p-6 bg-emerald-600/5 dark:bg-emerald-500/5 rounded-3xl border border-emerald-600/10 dark:border-emerald-500/10 mb-8 text-center backdrop-blur-xl transition-all duration-500">
-                                    <span class="block text-[10px] uppercase tracking-[0.2em] text-emerald-700/60 dark:text-emerald-400/40 font-black mb-2 transition-colors duration-500">Total Terkumpul:</span>
-                                    <span class="block text-3xl font-black text-emerald-700 dark:text-emerald-400 tracking-tighter transition-colors duration-500">Rp {{ number_format($collected, 0, ',', '.') }}</span>
-                                </div>
-                            @endif
-
                             <a href="{{ route('donasi.index', $campaign->slug) }}" class="group/btn relative flex items-center justify-center gap-3 w-full py-5 rounded-[2rem] bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-amber-500 text-white dark:text-emerald-950 font-black shadow-[0_20px_40px_-10px_rgba(5,150,105,0.4)] dark:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                                 <span class="relative z-10 uppercase tracking-widest text-sm">Berdonasi Sekarang</span>
                                 <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>

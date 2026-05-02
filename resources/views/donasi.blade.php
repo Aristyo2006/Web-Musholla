@@ -92,18 +92,20 @@
             {{-- Left Column: Content & Documentation --}}
             <div class="lg:col-span-8 space-y-12">
                 {{-- Hero Carousel Section --}}
-                <div class="relative group" x-data="{ 
-                    activeSlide: 0, 
-                    slides: [
-                        @if($campaign->image)
-                            { url: '{{ asset('storage/' . $campaign->image) }}', title: 'Banner Program' },
-                        @endif
-                        @foreach($campaign->galleries as $photo)
-                            @if($photo->image)
-                                { url: '{{ asset('storage/' . $photo->image) }}', title: '{{ $photo->title ?? 'Dokumentasi' }}' },
-                            @endif
-                        @endforeach
-                    ],
+                @php
+                    $carouselSlides = [];
+                    if ($campaign->image) {
+                        $carouselSlides[] = ['url' => asset('storage/' . $campaign->image), 'title' => 'Banner Program'];
+                    }
+                    foreach ($campaign->galleries as $photo) {
+                        if ($photo->image) {
+                            $carouselSlides[] = ['url' => asset('storage/' . $photo->image), 'title' => $photo->title ?? 'Dokumentasi'];
+                        }
+                    }
+                @endphp
+                <div class="relative group" x-data="{
+                    activeSlide: 0,
+                    slides: {{ Js::from($carouselSlides) }},
                     next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
                     prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length }
                 }" x-init="setInterval(() => { if(slides.length > 1) next() }, 5000)">
@@ -166,16 +168,42 @@
                         class="text-3xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter mb-8 leading-tight">
                         {{ $campaign->title }}
                     </h1>
-                    <div class="prose prose-zinc dark:prose-invert max-w-none">
-                        <p
-                            class="text-zinc-500 dark:text-emerald-100/40 text-lg md:text-xl font-medium leading-relaxed italic">
-                            {{ $campaign->description ?? 'Bantu wujudkan program kebaikan ini melalui donasi terbaik Anda.' }}
-                        </p>
+                    <div class="prose-content text-zinc-500 dark:text-emerald-100/60 text-lg md:text-xl font-medium leading-relaxed">
+                        {!! $campaign->description ?? '<p class="italic">Bantu wujudkan program kebaikan ini melalui donasi terbaik Anda.</p>' !!}
                     </div>
+
+                    <style>
+                        .prose-content h2 { @apply text-2xl font-black text-emerald-950 dark:text-white mt-8 mb-4 tracking-tighter; }
+                        .prose-content h3 { @apply text-xl font-bold text-emerald-900 dark:text-emerald-400 mt-6 mb-3 tracking-tight; }
+                        .prose-content p { @apply mb-4; }
+                        .prose-content ul { @apply list-disc ml-6 mb-6 space-y-2; }
+                        .prose-content ol { @apply list-decimal ml-6 mb-6 space-y-2; }
+                        .prose-content blockquote { @apply border-l-4 border-emerald-500 pl-6 py-2 italic bg-emerald-50/50 dark:bg-emerald-950/30 rounded-r-2xl mb-6; }
+                    </style>
+
+                    {{-- Progress Bar Section --}}
+                    @if($campaign->target_amount)
+                        @php
+                            $collected = $campaign->donations_sum_amount ?? 0;
+                            $percentage = min(100, ($collected / $campaign->target_amount) * 100);
+                        @endphp
+                        <div class="mt-12 space-y-4">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-[10px] font-black text-emerald-700/40 dark:text-emerald-400/40 uppercase tracking-widest mb-1.5">Dana Terkumpul</p>
+                                    <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter transition-colors">Rp {{ number_format($collected, 0, ',', '.') }}</p>
+                                </div>
+                                <div class="text-xl font-black text-emerald-950 dark:text-white bg-emerald-100 dark:bg-white/5 px-4 py-2 rounded-2xl border border-emerald-200 dark:border-white/10 shadow-xl">{{ number_format($percentage, 0) }}%</div>
+                            </div>
+                            <div class="h-6 bg-emerald-950/5 dark:bg-white/5 rounded-full overflow-hidden border border-emerald-900/10 dark:border-white/10 p-1">
+                                <div class="h-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 dark:from-amber-500 dark:via-amber-400 dark:to-amber-300 rounded-full shadow-lg transition-all duration-1000" style="width: {{ $percentage }}%"></div>
+                            </div>
+                        </div>
+                    @endif
 
                     {{-- Target Dana Meta --}}
                     <div
-                        class="pt-10 grid grid-cols-2 gap-6 border-t border-emerald-100 dark:border-white/5 mt-12 pb-10">
+                        class="pt-10 grid grid-cols-2 gap-6 border-t border-emerald-100 dark:border-white/5 mt-10 pb-10">
                         <div>
                             <p
                                 class="text-[10px] font-black text-emerald-700/40 dark:text-emerald-400/40 uppercase tracking-widest mb-1.5">
@@ -525,39 +553,88 @@
             }
         }
     </script>
-    <!-- Floating Donation Trigger (Mobile Jump to Form) -->
-    <div x-data="{ atForm: false }" x-init="
-            const observer = new IntersectionObserver((entries) => {
-                atForm = entries[0].isIntersecting;
-            }, { threshold: 0.1 });
-            observer.observe(document.getElementById('donation-form'));
-         " x-show="!atForm" x-cloak x-transition:enter="transition ease-out duration-500"
-        x-transition:enter-start="opacity-0 translate-y-10 scale-90"
-        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-        x-transition:leave="transition ease-in duration-300"
-        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-        x-transition:leave-end="opacity-0 translate-y-10 scale-90" class="md:hidden fixed bottom-10 right-6 z-30">
-        <a href="#donation-form" id="fab-donasi"
-            class="relative flex items-center justify-center px-8 py-5 text-white transition-all duration-500 group active:scale-95 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+    <!-- Floating Donation Trigger (Mobile) -->
+    @if($campaign->target_amount)
+        @php
+            $fabCollected = $campaign->donations_sum_amount ?? 0;
+            $fabPercentage = min(100, ($fabCollected / $campaign->target_amount) * 100);
+        @endphp
+        <div x-data="{ atForm: false }" x-init="
+                const observer = new IntersectionObserver((entries) => {
+                    atForm = entries[0].isIntersecting;
+                }, { threshold: 0.1 });
+                observer.observe(document.getElementById('donation-form'));
+             " x-show="!atForm" x-cloak
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-10 scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 translate-y-10 scale-95"
+            class="md:hidden fixed bottom-6 right-4 left-4 z-30">
 
-            {{-- Liquid Glass Background --}}
-            <div class="glass-btn-bg absolute inset-0 rounded-full pointer-events-none transition-all duration-500 z-0"
-                style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(255,255,255,0.2); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); will-change: backdrop-filter, background-color;">
-            </div>
+            <a href="#donation-form" id="fab-donasi"
+                class="relative flex flex-row items-center gap-4 px-5 py-4 text-white active:scale-95 transition-all duration-300 rounded-[2rem] overflow-hidden"
+                style="background: rgba(6, 30, 20, 0.85); border: 1px solid rgba(52, 211, 153, 0.25); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;">
 
-            <span
-                class="relative z-10 text-[11px] font-black uppercase tracking-[0.2em] text-white drop-shadow-md">Donasi
-                Sekarang</span>
-        </a>
-    </div>
+                {{-- Liquid Glass Background --}}
+                <div class="glass-btn-bg absolute inset-0 pointer-events-none z-0"
+                    style="border-radius: 2rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); will-change: backdrop-filter;">
+                </div>
 
+                {{-- Left: Progress Info --}}
+                <div class="relative z-10 flex-1 min-w-0">
+                    <p class="text-[8px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-0.5">Dana Terkumpul</p>
+                    <p class="text-sm font-black text-white tracking-tighter leading-none truncate">Rp {{ number_format($fabCollected, 0, ',', '.') }}</p>
 
+                    {{-- Progress Bar --}}
+                    <div class="mt-2 h-2 rounded-full overflow-hidden" style="background: rgba(255,255,255,0.15);">
+                        <div class="h-full rounded-full" style="width: {{ $fabPercentage }}%; background: linear-gradient(to right, #10b981, #f59e0b); transition: width 1s ease; min-width: 4px;"></div>
+                    </div>
+                </div>
+
+                {{-- Divider --}}
+                <div class="relative z-10 w-px h-10 bg-white/10 flex-shrink-0"></div>
+
+                {{-- Right: CTA --}}
+                <div class="relative z-10 flex flex-col items-center gap-1 flex-shrink-0">
+                    <div class="text-base font-black text-white leading-none">{{ number_format($fabPercentage, 0) }}<span class="text-emerald-400 text-xs">%</span></div>
+                    <span class="text-[8px] font-black uppercase tracking-widest text-emerald-300">Donasi</span>
+                    <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </a>
+        </div>
+    @else
+        <div x-data="{ atForm: false }" x-init="
+                const observer = new IntersectionObserver((entries) => {
+                    atForm = entries[0].isIntersecting;
+                }, { threshold: 0.1 });
+                observer.observe(document.getElementById('donation-form'));
+             " x-show="!atForm" x-cloak
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-10 scale-90"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 translate-y-10 scale-90"
+            class="md:hidden fixed bottom-10 right-6 z-30">
+            <a href="#donation-form" id="fab-donasi"
+                class="relative flex items-center justify-center px-8 py-5 text-white transition-all duration-500 group active:scale-95 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <div class="glass-btn-bg absolute inset-0 rounded-full pointer-events-none transition-all duration-500 z-0"
+                    style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(255,255,255,0.2); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); will-change: backdrop-filter, background-color;">
+                </div>
+                <span class="relative z-10 text-[11px] font-black uppercase tracking-[0.2em] text-white drop-shadow-md">Donasi Sekarang</span>
+            </a>
+        </div>
+    @endif
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof LiquidGlassSVG !== 'undefined') {
                 const fab = document.getElementById('fab-donasi');
+                if (!fab) return;
                 const bg = fab.querySelector('.glass-btn-bg');
+                if (!bg) return;
                 let isHovered = false;
 
                 const updateFilter = () => {
@@ -565,21 +642,14 @@
                     const filterUrl = LiquidGlassSVG.getDisplacementFilter({
                         height: Math.ceil(rect.height),
                         width: Math.ceil(rect.width),
-                        radius: rect.height / 2, // Capsule ends
-                        depth: isHovered ? 5 : 5,
-                        strength: isHovered ? 120 : 120, // Stronger refraction
-                        chromaticAberration: isHovered ? 30 : 30
+                        radius: 32, // 2rem = 32px to match rounded-[2rem]
+                        depth: 5,
+                        strength: 80,
+                        chromaticAberration: 15
                     });
 
-                    // Theme-aware transparency logic
-                    const isDark = document.documentElement.classList.contains('dark');
-                    const lightColor = isHovered ? 'rgba(4, 37, 26, 0.4)' : 'rgba(5, 70, 48, 0.42)';
-                    const darkColor = isHovered ? 'rgba(16, 185, 129, 0.01)' : 'rgba(16, 185, 129, 0.01)';
-
-                    bg.style.backdropFilter = `blur(${isHovered ? '2px' : '2px'}) url("${filterUrl}")`;
-                    bg.style.webkitBackdropFilter = `blur(${isHovered ? '2px' : '2px'}) url("${filterUrl}")`;
-                    bg.style.backgroundColor = isDark ? darkColor : lightColor;
-                    bg.style.borderRadius = '9999px'; // capsule shape
+                    bg.style.backdropFilter = `blur(2px) url("${filterUrl}")`;
+                    bg.style.webkitBackdropFilter = `blur(2px) url("${filterUrl}")`;
                 };
 
                 updateFilter();

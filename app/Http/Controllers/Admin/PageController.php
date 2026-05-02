@@ -9,8 +9,30 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
+    public function editAboutUs()
+    {
+        $page = Page::firstOrCreate(
+            ['slug' => 'tentang-kami'],
+            [
+                'title' => 'Tentang Kami',
+                'content' => '<h2>Membangun Kebaikan Bersama</h2><p>Tuliskan deskripsi tentang musholla di sini menggunakan editor Quill.</p>',
+            ]
+        );
+
+        return view('admin.pages.edit', compact('page'));
+    }
+
     public function index()
     {
+        // Auto-create Tentang Kami if missing (for fresh databases or accidental deletion)
+        if (!Page::where('slug', 'tentang-kami')->exists()) {
+            Page::create([
+                'title' => 'Tentang Kami',
+                'slug' => 'tentang-kami',
+                'content' => '<h2>Membangun Kebaikan Bersama</h2><p>Tuliskan deskripsi tentang musholla di sini menggunakan editor Quill.</p>',
+            ]);
+        }
+
         $pages = Page::latest()->get();
         return view('admin.pages.index', compact('pages'));
     }
