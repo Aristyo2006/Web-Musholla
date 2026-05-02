@@ -434,11 +434,12 @@
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {{-- Mobile: Horizontal scroll | Desktop: Grid --}}
+            <div id="articles-scroll" class="articles-container gap-6 md:gap-12 pb-4 md:pb-0 snap-x snap-mandatory md:snap-none cursor-grab select-none -mx-6 px-6 md:mx-0 md:px-0">
                 @foreach($articles as $article)
                     <a href="{{ route('articles.show', $article->slug) }}"
-                        class="group h-full flex flex-col bg-white dark:bg-white/5 backdrop-blur-3xl rounded-[3rem] overflow-hidden border border-emerald-100 dark:border-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.1)] dark:hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.2)] hover:border-emerald-500/30">
-                        <div class="h-72 overflow-hidden relative">
+                        class="article-card group flex-shrink-0 h-full flex flex-col bg-white dark:bg-white/5 backdrop-blur-3xl rounded-[3rem] overflow-hidden border border-emerald-100 dark:border-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.1)] dark:hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.2)] hover:border-emerald-500/30 snap-center">
+                        <div class="h-52 md:h-72 overflow-hidden relative flex-shrink-0">
                             <img src="{{ $article->image ? Storage::url($article->image) : '/images/hero.png' }}"
                                 alt="{{ $article->title }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
@@ -446,55 +447,43 @@
 
                             <!-- Category Badge -->
                             <div class="absolute top-6 left-6">
-                                <span
-                                    class="px-4 py-2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg">Update</span>
+                                <span class="px-4 py-2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg">Update</span>
                             </div>
                         </div>
 
-                        <div class="p-10 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-6">
+                        <div class="p-8 flex flex-col flex-grow">
+                            <div class="flex items-center gap-3 mb-4">
                                 <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                                <span
-                                    class="text-zinc-400 dark:text-emerald-100/30 text-xs font-bold tracking-wider capitalize">
+                                <span class="text-zinc-400 dark:text-emerald-100/30 text-xs font-bold tracking-wider capitalize">
                                     {{ $article->published_at ? $article->published_at->translatedFormat('d M Y') : $article->created_at->translatedFormat('d M Y') }}
                                 </span>
                             </div>
 
-                            <h3
-                                class="text-2xl font-black mb-6 line-clamp-2 leading-tight text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
+                            <h3 class="text-xl md:text-2xl font-black mb-4 line-clamp-2 leading-tight text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
                                 {{ $article->title }}
                             </h3>
 
-                            <p
-                                class="text-zinc-500 dark:text-emerald-100/40 text-base mb-10 line-clamp-3 leading-relaxed font-medium">
-                                {{ Str::limit(strip_tags($article->content), 120) }}
+                            <p class="text-zinc-500 dark:text-emerald-100/40 text-sm md:text-base mb-6 md:mb-10 line-clamp-2 md:line-clamp-3 leading-relaxed font-medium">
+                                {{ Str::limit(strip_tags($article->content), 100) }}
                             </p>
 
-                            <div
-                                class="mt-auto pt-8 border-t border-emerald-100/50 dark:border-white/5 flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-2xl bg-emerald-600 dark:bg-emerald-500 flex items-center justify-center text-white text-xs font-black overflow-hidden shadow-lg transform group-hover:rotate-6 transition-transform duration-500">
+                            <div class="mt-auto pt-6 border-t border-emerald-100/50 dark:border-white/5 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-emerald-600 dark:bg-emerald-500 flex items-center justify-center text-white text-xs font-black overflow-hidden shadow-lg">
                                         @if($article->user && $article->user->profile_picture)
-                                            <img src="{{ \Illuminate\Support\Facades\Storage::url($article->user->profile_picture) }}"
-                                                alt="A" class="w-full h-full object-cover">
+                                            <img src="{{ \Illuminate\Support\Facades\Storage::url($article->user->profile_picture) }}" alt="A" class="w-full h-full object-cover">
                                         @else
                                             {{ substr($article->user->name ?? 'A', 0, 1) }}
                                         @endif
                                     </div>
                                     <div class="flex flex-col">
-                                        <span
-                                            class="font-bold text-sm text-zinc-900 dark:text-white truncate max-w-[120px]">{{ $article->user->name ?? 'Admin Musholla' }}</span>
-                                        <span
-                                            class="text-[10px] text-zinc-400 dark:text-emerald-100/20 font-medium uppercase tracking-tighter">Kontributor</span>
+                                        <span class="font-bold text-xs md:text-sm text-zinc-900 dark:text-white truncate max-w-[100px] md:max-w-[120px]">{{ $article->user->name ?? 'Admin Musholla' }}</span>
+                                        <span class="hidden md:block text-[10px] text-zinc-400 dark:text-emerald-100/20 font-medium uppercase tracking-tighter">Kontributor</span>
                                     </div>
                                 </div>
-                                <div
-                                    class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-white/5 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-500 group-hover:text-white dark:group-hover:text-zinc-950 transition-all duration-500">
-                                    <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-emerald-50 dark:bg-white/5 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-500 group-hover:text-white transition-all duration-500">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                                     </svg>
                                 </div>
                             </div>
@@ -503,8 +492,54 @@
                 @endforeach
             </div>
 
+            <style>
+                .articles-container {
+                    display: flex;
+                    overflow-x: auto;
+                }
+                .articles-container::-webkit-scrollbar { display: none; }
+                .articles-container { -ms-overflow-style: none; scrollbar-width: none; }
+                #articles-scroll.active { cursor: grabbing; }
+                .article-card { width: 300px; min-width: 300px; }
+                
+                @media (min-width: 768px) {
+                    .articles-container {
+                        display: grid;
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                        overflow-x: visible;
+                    }
+                    .article-card { width: 100%; min-width: 0; }
+                }
+                @media (min-width: 1024px) {
+                    .articles-container {
+                        grid-template-columns: repeat(3, minmax(0, 1fr));
+                    }
+                }
+            </style>
+            <script>
+                (function() {
+                    const slider = document.getElementById('articles-scroll');
+                    if (!slider) return;
+                    let isDown = false, startX, scrollLeft;
+                    slider.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        slider.classList.add('active');
+                        startX = e.pageX - slider.offsetLeft;
+                        scrollLeft = slider.scrollLeft;
+                    });
+                    slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
+                    slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+                    slider.addEventListener('mousemove', (e) => {
+                        if (!isDown) return;
+                        e.preventDefault();
+                        const x = e.pageX - slider.offsetLeft;
+                        slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
+                    });
+                })();
+            </script>
+
             <!-- See All Articles Button -->
-            <div class="mt-12 text-center">
+            <div class="mt-10 text-center">
                 <a href="{{ route('articles.index') }}" class="inline-flex items-center gap-3 px-8 py-4 bg-emerald-50 dark:bg-white/5 text-emerald-700 dark:text-emerald-400 font-black rounded-2xl hover:bg-emerald-100 dark:hover:bg-white/10 transition-all border border-emerald-200 dark:border-white/10 group">
                     Lihat Semua Artikel
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
