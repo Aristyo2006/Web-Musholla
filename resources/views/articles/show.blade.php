@@ -106,7 +106,7 @@
                     <div class="flex items-center gap-4 md:gap-6">
                         <div class="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-white dark:bg-white/5 border border-emerald-200 dark:border-white/10 flex items-center justify-center text-zinc-900 dark:text-white text-xl md:text-2xl font-black overflow-hidden shadow-2xl backdrop-blur-xl transition-all duration-500">
                             @if($article->user && $article->user->profile_picture)
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url($article->user->profile_picture) }}" alt="A" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . $article->user->profile_picture) }}" alt="A" class="w-full h-full object-cover">
                             @else
                                 {{ substr($article->user->name ?? 'A', 0, 1) }}
                             @endif
@@ -126,7 +126,7 @@
                 @if($article->image)
                     <div class="relative w-full aspect-[21/9] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-emerald-100 dark:border-white/5 transition-all duration-500">
                         <div class="absolute inset-0 bg-emerald-950/10 dark:bg-emerald-950/20 mix-blend-multiply"></div>
-                        <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover grayscale-[0.1] dark:grayscale-0">
+                        <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover grayscale-[0.1] dark:grayscale-0">
                     </div>
                 @endif
             </header>
@@ -152,7 +152,7 @@
                 @foreach($relatedArticles as $related)
                     <a href="{{ route('articles.show', $related->slug) }}" class="group block h-full bg-white dark:bg-white/5 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden border border-emerald-100 dark:border-white/10 hover:border-emerald-500/20 transition-all duration-500 hover:scale-[1.02] shadow-2xl shadow-emerald-950/5 dark:shadow-none hover:bg-emerald-50 dark:hover:bg-white/[0.08]">
                         <div class="aspect-video overflow-hidden relative">
-                            <img src="{{ $related->image ? Storage::url($related->image) : '/images/hero.png' }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                            <img src="{{ $related->image ? asset('storage/' . $related->image) : '/images/hero.png' }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
                             <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/40 via-transparent to-transparent opacity-60"></div>
                         </div>
                         <div class="p-8">

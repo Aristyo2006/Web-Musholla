@@ -95,9 +95,13 @@
                 <div class="relative group" x-data="{ 
                     activeSlide: 0, 
                     slides: [
-                        { url: '{{ Storage::url($campaign->image) }}', title: 'Banner Program' },
+                        @if($campaign->image)
+                            { url: '{{ asset('storage/' . $campaign->image) }}', title: 'Banner Program' },
+                        @endif
                         @foreach($campaign->galleries as $photo)
-                            { url: '{{ Storage::url($photo->image) }}', title: '{{ $photo->title ?? 'Dokumentasi' }}' },
+                            @if($photo->image)
+                                { url: '{{ asset('storage/' . $photo->image) }}', title: '{{ $photo->title ?? 'Dokumentasi' }}' },
+                            @endif
                         @endforeach
                     ],
                     next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },

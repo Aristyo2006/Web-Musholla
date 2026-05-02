@@ -39,7 +39,7 @@
                                 <div
                                     class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-emerald-950 text-[10px] font-black overflow-hidden shadow-inner">
                                     @if(Auth::user()->profile_picture)
-                                        <img src="{{ Storage::url(Auth::user()->profile_picture) }}"
+                                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                             class="w-full h-full object-cover">
                                     @else
                                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -179,7 +179,7 @@
                     <div
                         class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-emerald-950 text-sm font-black overflow-hidden flex-shrink-0 shadow-lg shadow-amber-500/20">
                         @if(Auth::user()->profile_picture)
-                            <img src="{{ Storage::url(Auth::user()->profile_picture) }}" class="w-full h-full object-cover">
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="w-full h-full object-cover">
                         @else
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         @endif
