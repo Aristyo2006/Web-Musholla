@@ -30,9 +30,19 @@
                             <label class="block text-sm font-bold text-gray-700 mb-2 uppercase">Peran / Jabatan (Opsional)</label>
                             <input type="text" name="role" value="{{ old('role', $testimonial->role) }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
                         </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 uppercase">Ulasan / Testimoni</label>
-                            <textarea name="content" required rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">{{ old('content', $testimonial->content) }}</textarea>
+                        <div x-data="{
+                            content: {{ json_encode(old('content', $testimonial->content)) }},
+                            get charCount() {
+                                return (this.content || '').length;
+                            }
+                        }">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-bold text-gray-700 uppercase">Ulasan / Testimoni</label>
+                                <span class="text-xs font-bold px-2 py-1 rounded-md transition-colors" 
+                                      :class="charCount >= 100 ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-600'" 
+                                      x-text="charCount + ' / 100 Huruf'"></span>
+                            </div>
+                            <textarea name="content" required rows="4" maxlength="100" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500" x-model="content"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2 uppercase">Foto / Avatar (Opsional)</label>

@@ -25,7 +25,7 @@ class TestimonialController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'nullable|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:100',
             'avatar' => 'nullable|image|max:2048',
             'is_active' => 'boolean',
         ]);
@@ -51,7 +51,7 @@ class TestimonialController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'nullable|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:100',
             'avatar' => 'nullable|image|max:2048',
         ]);
 

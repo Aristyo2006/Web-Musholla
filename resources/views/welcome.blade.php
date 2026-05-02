@@ -580,7 +580,7 @@
                             <!-- Divider -->
                             <div class="w-8 h-1 bg-emerald-500 rounded-full my-3 mx-auto"></div>
                             <!-- Quote -->
-                            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed italic text-sm">"{{ $testimonial->content }}"</p>
+                            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed italic text-sm break-words">"{{ \Illuminate\Support\Str::limit($testimonial->content, 100) }}"</p>
                         </div>
                         @endforeach
                         <div class="flex-shrink-0 w-6"></div>
