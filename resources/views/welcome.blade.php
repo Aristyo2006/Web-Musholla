@@ -439,7 +439,7 @@
                 @foreach($articles as $article)
                     <a href="{{ route('articles.show', $article->slug) }}"
                         class="article-card group flex-shrink-0 h-full flex flex-col bg-white dark:bg-white/5 backdrop-blur-3xl rounded-[3rem] overflow-hidden border border-emerald-100 dark:border-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.1)] dark:hover:shadow-[0_50px_100px_-20px_rgba(16,185,129,0.2)] hover:border-emerald-500/30 snap-center">
-                        <div class="h-52 md:h-72 overflow-hidden relative flex-shrink-0">
+                        <div class="article-image-wrapper overflow-hidden relative flex-shrink-0">
                             <img src="{{ $article->image ? Storage::url($article->image) : '/images/hero.png' }}"
                                 alt="{{ $article->title }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
@@ -501,6 +501,7 @@
                 .articles-container { -ms-overflow-style: none; scrollbar-width: none; }
                 #articles-scroll.active { cursor: grabbing; }
                 .article-card { width: 300px; min-width: 300px; }
+                .article-image-wrapper { height: 208px; } /* Equivalent to h-52 */
                 
                 @media (min-width: 768px) {
                     .articles-container {
@@ -509,6 +510,7 @@
                         overflow-x: visible;
                     }
                     .article-card { width: 100%; min-width: 0; }
+                    .article-image-wrapper { height: 288px; } /* Equivalent to h-72 */
                 }
                 @media (min-width: 1024px) {
                     .articles-container {
