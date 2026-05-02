@@ -575,12 +575,12 @@
                                 @endif
                             </div>
                             <!-- Name & Role -->
-                            <h4 class="font-black text-zinc-900 dark:text-white text-base tracking-tight leading-tight">{{ $testimonial->name }}</h4>
-                            <p class="text-emerald-600 dark:text-emerald-400 font-bold text-xs mt-0.5 uppercase tracking-wider">{{ $testimonial->role }}</p>
+                            <h4 class="font-black text-zinc-900 dark:text-white text-sm tracking-tight leading-tight">{{ $testimonial->name }}</h4>
+                            <p class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px] mt-1 uppercase tracking-wider">{{ $testimonial->role }}</p>
                             <!-- Divider -->
                             <div class="w-8 h-1 bg-emerald-500 rounded-full my-3 mx-auto"></div>
                             <!-- Quote -->
-                            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed italic text-xs">"{{ $testimonial->content }}"</p>
+                            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed italic text-sm">"{{ $testimonial->content }}"</p>
                         </div>
                         @endforeach
                         <div class="flex-shrink-0 w-6"></div>
@@ -592,9 +592,9 @@
                 .scrollbar-hide::-webkit-scrollbar { display: none; }
                 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
                 #testimonial-scroll.active { cursor: grabbing; }
-                .testimonial-card { width: 170px; min-width: 170px; }
+                .testimonial-card { width: 240px; min-width: 240px; }
                 @media (min-width: 768px) {
-                    .testimonial-card { width: 260px; min-width: 260px; }
+                    .testimonial-card { width: 320px; min-width: 320px; }
                 }
             </style>
             <script>
