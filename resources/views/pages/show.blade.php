@@ -19,6 +19,12 @@
         .page-content ul, .page-content ol { margin-left: 2rem; margin-bottom: 1.5rem; }
         .page-content li { margin-bottom: 0.5rem; color: #4b5563; }
         .page-content blockquote { border-left: 4px solid #10b981; padding-left: 1.5rem; font-style: italic; color: #4b5563; background: #f0fdf4; padding: 1.5rem; border-radius: 0 1rem 1rem 0; margin: 2rem 0; }
+
+        /* Quill alignment support — class ini dipakai Quill tapi quill.snow.css tidak di-load di halaman publik */
+        .page-content .ql-align-center { text-align: center; }
+        .page-content .ql-align-right { text-align: right; }
+        .page-content .ql-align-justify { text-align: justify; }
+        .page-content .ql-align-left { text-align: left; }
         
         /* Dark Mode overrides for content */
         html.dark .page-content h1, html.dark .page-content h2 { color: #34d399; }

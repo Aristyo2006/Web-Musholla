@@ -69,6 +69,12 @@
             margin: 3rem 0;
             font-weight: 500;
         }
+
+        /* Quill alignment support — class dari Quill editor yang tidak di-load CSS-nya di halaman publik */
+        .article-content .ql-align-center { text-align: center; }
+        .article-content .ql-align-right { text-align: right; }
+        .article-content .ql-align-justify { text-align: justify; }
+        .article-content .ql-align-left { text-align: left; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-emerald-50 scroll-smooth selection:bg-emerald-500 selection:text-white transition-colors duration-500">
