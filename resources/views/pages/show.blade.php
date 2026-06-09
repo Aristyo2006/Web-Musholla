@@ -15,7 +15,7 @@
         .page-content img { max-width: 100%; height: auto; border-radius: 1rem; margin: 2rem auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .page-content h1 { font-size: 2.5rem; font-weight: 900; margin-top: 2rem; margin-bottom: 1rem; color: #064e3b; }
         .page-content h2 { font-size: 2rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; color: #064e3b; }
-        .page-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #4b5563; font-size: 1.1rem; }
+        .page-content p { margin-bottom: 0; line-height: 1.8; color: #4b5563; font-size: 1.1rem; }
         .page-content ul, .page-content ol { margin-left: 2rem; margin-bottom: 1.5rem; }
         .page-content li { margin-bottom: 0.5rem; color: #4b5563; }
         .page-content blockquote { border-left: 4px solid #10b981; padding-left: 1.5rem; font-style: italic; color: #4b5563; background: #f0fdf4; padding: 1.5rem; border-radius: 0 1rem 1rem 0; margin: 2rem 0; }
@@ -25,6 +25,11 @@
         .page-content .ql-align-right { text-align: right; }
         .page-content .ql-align-justify { text-align: justify; }
         .page-content .ql-align-left { text-align: left; }
+
+        /* Quill paragraph spacing (custom format) */
+        .page-content .ql-spacing-rapat { margin-bottom: 0.35rem; }
+        .page-content .ql-spacing-normal { margin-bottom: 0.75rem; }
+        .page-content .ql-spacing-longgar { margin-bottom: 1.5rem; }
         
         /* Dark Mode overrides for content */
         html.dark .page-content h1, html.dark .page-content h2 { color: #34d399; }

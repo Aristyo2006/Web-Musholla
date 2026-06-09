@@ -3,6 +3,22 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         .ql-container.ql-snow { min-height: 400px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; }
+
+        /* === Custom Spacing Picker — polished === */
+        .ql-snow .ql-picker.ql-spacing { width: 86px; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-label { padding-left: 6px; display: flex; align-items: center; gap: 2px; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-label::before { content: 'Spasi'; font-size: 13px; font-weight: 600; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-options { width: auto; min-width: 120px; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-item { padding: 4px 10px; font-size: 13px; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-item[data-value="rapat"]::before { content: '🟢 Rapat'; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-item[data-value="normal"]::before { content: '🟡 Normal'; }
+        .ql-snow .ql-picker.ql-spacing .ql-picker-item[data-value="longgar"]::before { content: '🔴 Longgar'; }
+        .ql-picker.ql-spacing .ql-picker-item::before { content: '⚪ Default'; }
+
+        /* === Biarkan spacing kelihatan di dalam editor === */
+        .ql-editor p.ql-spacing-rapat { margin-bottom: 0.35rem !important; }
+        .ql-editor p.ql-spacing-normal { margin-bottom: 0.75rem !important; }
+        .ql-editor p.ql-spacing-longgar { margin-bottom: 1.5rem !important; }
     </style>
     @endpush
 
@@ -46,6 +62,14 @@
     <script>
         Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
 
+        // Register custom Spasi (line spacing) format
+        var Parchment = Quill.import('parchment');
+        var SpacingStyle = new Parchment.Attributor.Class('spacing', 'ql-spacing', {
+            scope: Parchment.Scope.BLOCK,
+            whitelist: ['rapat', 'normal', 'longgar']
+        });
+        Quill.register('formats/spacing', SpacingStyle, true);
+
         var quill = new Quill('#editor-container', {
             theme: 'snow',
             modules: {
@@ -57,11 +81,22 @@
                         ['blockquote', 'code-block'],
                         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                         [{ 'align': [] }],
+                        [{ 'spacing': [false, 'rapat', 'normal', 'longgar'] }],
                         ['link', 'image'],
                         ['clean']
                     ],
                     handlers: {
-                        image: imageHandler
+                        image: imageHandler,
+                        spacing: function(value) {
+                            var range = quill.getSelection();
+                            if (!range) return;
+                            // Ambil seluruh baris/paragraf yang kena selection, lalu format semuanya
+                            var lines = quill.getLines(range.index, range.length);
+                            lines.forEach(function(line) {
+                                var lineRange = quill.getIndex(line);
+                                quill.formatText(lineRange, line.length(), 'spacing', value || false);
+                            });
+                        }
                     }
                 }
             }
