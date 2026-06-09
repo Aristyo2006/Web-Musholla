@@ -238,7 +238,7 @@
                     {{ $settings['about_title'] ?? 'Tentang Musholla Al-Kautsar' }}
                 </h2>
                 <div
-                    class="text-zinc-600 dark:text-emerald-100/40 text-xl md:text-2xl leading-relaxed space-y-8 lg:max-w-xl font-medium italic">
+                    class="text-zinc-600 dark:text-emerald-100/40 text-lg md:text-xl leading-relaxed space-y-8 lg:max-w-xl font-medium italic">
                     {!! nl2br(e($settings['about_content'] ?? 'Musholla Al-Kautsar adalah pusat kegiatan ibadah dan ukhuwah islamiyah bagi masyarakat sekitar.')) !!}
                 </div>
             </div>
