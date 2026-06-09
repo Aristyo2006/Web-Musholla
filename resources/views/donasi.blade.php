@@ -238,13 +238,13 @@
                                 class="block text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Pilih
                                 Nominal</label>
                             <div class="grid grid-cols-3 gap-2 px-1">
-                                <button type="button" onclick="setNominal(10000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">10K</button>
                                 <button type="button" onclick="setNominal(50000, this)"
-                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50K
-                                    </tton>
-                                    <button type="button" onclick="setNominal(100000, this)"
-                                        class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100K</button>
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">50K</button>
+                                <button type="button" onclick="setNominal(100000, this)"
+                                    class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">100K
+                                    </button>
+                                    <button type="button" onclick="setNominal(500000, this)"
+                                        class="preset-btn py-4 rounded-2xl bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/10 text-emerald-800 dark:text-white font-black hover:bg-emerald-100 transition-all text-xs tracking-tighter">500K</button>
                             </div>
                             <div class="relative group">
                                 <span
